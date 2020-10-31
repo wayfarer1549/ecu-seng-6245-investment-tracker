@@ -51,3 +51,13 @@ class SharedInvestment(Investment):
 		max_length=3,
 		choices=SHARED_INVESTMENT_CHOICES,
 		)
+	
+class InvestmentList(models.Model):
+	'''Overview: An investment list contains a queue of all investments owned by a customer (i.e. their portfolio)
+	'''
+	account = models.ForeignKey('Account',
+		on_delete=models.CASCADE)
+	portfolio = models.ManyToManyField('SharedInvestment',
+		on_delete=models.CASCADE)
+
+
