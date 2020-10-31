@@ -16,7 +16,7 @@ class Investment(models.Model):
 	'''Overview Represents an investment in a customer's portfolio'''
 
 	# Attributes
-	purchase_date = models.DateTimeField('date purchased')
+	purchase_date = models.DateField('date purchased')
 	name = models.CharField(max_length=200)
 
 	class Meta:
@@ -28,7 +28,7 @@ class Bond(Investment):
 	# Attributes
 	bond_yield = models.FloatField() # the interest rate of the bond
 	bond_type = models.CharField(max_length=200)
-	maturity_date = models.DateTimeField('maturity date of the bond')
+	maturity_date = models.DateField('maturity date of the bond')
 	number_of_payments = models.IntegerField() # how many payments of interest this bond pays per year
 
 class SharedInvestment(Investment):
