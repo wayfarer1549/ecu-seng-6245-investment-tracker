@@ -10,3 +10,15 @@ class Account(models.Model):
 	#advisor = models.ForeignKey()
 	#portfolio
 	cash_balance = models.DecimalField(max_digits=22, decimal_laces=2)
+
+
+class Investment(models.Model):
+	'''Overview Represents an investment in a customer's portfolio'''
+
+	# Attributes
+	purchase_date = models.DateTimeField('date purchased')
+	name = models.CharField(max_length=200)
+
+	class Meta:
+		abstract = True
+
