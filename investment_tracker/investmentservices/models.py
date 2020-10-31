@@ -22,3 +22,12 @@ class Investment(models.Model):
 	class Meta:
 		abstract = True
 
+class Bond(Investment):
+	'''Overview: Represents a government or corporate bond investment in a customer's portfolio'''
+
+	# Attributes
+	bond_yield = models.FloatField() # the interest rate of the bond
+	bond_type = models.CharField(max_length=200)
+	maturity_date = models.DateTimeField('maturity date of the bond')
+	number_of_payments = models.IntegerField() # how many payments of interest this bond pays per year
+
