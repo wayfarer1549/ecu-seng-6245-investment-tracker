@@ -35,9 +35,19 @@ class SharedInvestment(Investment):
 	'''Overview: A shared investment is a stock, mutual fund, or Exchange Traded Fund (ETF) comprised
 	of a number of shares.'''
 
+	SHARED_INVESTMENT_CHOICES = [
+		('STK', 'Stock'),
+		('MUF', 'Mutual Fund'),
+		('ETF', 'Exchange Traded Fund')
+
+	]
+
 	# Attributes
 	ticker_symbol = models.CharField(max_length=6) # investment's ticker symbol
 	number_of_shares = models.IntegerField() # possible to have fractional shares
 	purchase_price = models.DecimalField(max_digits=12, decimal_laces=2) # price per share when purchased
 	current_price = models.DecimalField(max_digits=12, decimal_laces=2) # current price per share
-	investment_type = models.CharField(max_length=200)
+	investment_type = models.CharField(
+		max_length=3,
+		choices=SHARED_INVESTMENT_CHOICES,
+		)
