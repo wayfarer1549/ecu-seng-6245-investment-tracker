@@ -1,0 +1,11 @@
+<h1>Transactions</h1>
+
+<ul>
+
+{% for transaction in object_list %}
+	<li>{{transaction.date}}</li>
+{% empty %}
+	<li>No transactions to display.</li>
+{% endfor %}
+
+</ul>
