@@ -1,0 +1,11 @@
+<h1>Bonds</h1>
+
+<ul>
+
+{% for bond in object_list %}
+	<li>{{bond.name}}</li>
+{% empty %}
+	<li>No investments to display.</li>
+{% endfor %}
+
+</ul>
