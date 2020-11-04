@@ -60,3 +60,10 @@ class InvestmentList(models.Model):
 	portfolio = models.ManyToManyField('SharedInvestment',)
 
 
+class Transaction(models.Model):
+	'''Overview: Represents an investment transaction'''
+	# Attributes
+	purchase_date = models.DateField('date purchased')
+
+
+
