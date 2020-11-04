@@ -1,0 +1,11 @@
+<h1>Shared Investments</h1>
+
+<ul>
+
+{% for shared_investment in object_list %}
+	<li>{{shared_investment.ticker_symbol}}</li>
+{% empty %}
+	<li>No investments to display.</li>
+{% endfor %}
+
+</ul>
