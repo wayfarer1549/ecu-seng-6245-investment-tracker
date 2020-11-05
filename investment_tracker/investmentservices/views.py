@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, UpdateView
 from .models import Account, SharedInvestment, Bond, Transaction
 
 # Create your views here.
@@ -13,6 +14,13 @@ class AccountDetailView(DetailView):
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 		return context
+
+class AccountUpdate(UpdateView):
+	'''A view for updating an account'''
+	model = Account
+	fields = ['advisor']
+	template_name = 'investmentservices/account_update.html'
+	success_url = reverse_lazy('shared-investments-list', )
 
 
 
