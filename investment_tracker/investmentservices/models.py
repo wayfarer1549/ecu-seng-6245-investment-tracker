@@ -11,6 +11,8 @@ class Account(models.Model):
 	#portfolio
 	cash_balance = models.DecimalField(max_digits=22, decimal_places=2)
 
+	def get_absolute_url(self):
+		return reverse('account-detail', kwargs={'pk': self.pk})
 
 class Investment(models.Model):
 	'''Overview Represents an investment in a customer's portfolio'''
