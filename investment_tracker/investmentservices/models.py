@@ -17,6 +17,12 @@ class Account(models.Model):
 	def get_account_balance(self):
 		return self.investment_balance + self.cash_balance
 
+	def get_cash_balance(self):
+		return self.cash_balance
+
+	def get_investment_balance(self):
+		return self.cash_balance
+
 class Investment(models.Model):
 	'''Overview Represents an investment in a customer's portfolio'''
 
