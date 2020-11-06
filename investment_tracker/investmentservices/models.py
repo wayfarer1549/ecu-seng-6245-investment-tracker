@@ -54,6 +54,22 @@ class SharedInvestment(Investment):
 		choices=SHARED_INVESTMENT_CHOICES,
 		)
 
+	def update_share_count(this, share_count):
+		'''updates this model with a new share count'''
+		if sharecount > 0:
+			this.number_of_shares += sharecount
+		else:
+			number_of_shares -= sharecount
+
+		this.save()
+
+	def update_current_price(this, new_price):
+		'''updates the current share price of the investment'''
+		this.current_price = new_price
+		this.save()
+
+
+
 class InvestmentList(models.Model):
 	'''Overview: An investment list contains a queue of all investments owned by a customer (i.e. their portfolio)
 	'''
