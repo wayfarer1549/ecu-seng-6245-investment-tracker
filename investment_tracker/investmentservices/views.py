@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, UpdateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from .models import Account, SharedInvestment, Bond, Transaction
 
 # Create your views here.
@@ -54,3 +54,9 @@ class TransactionsListView(ListView):
 		context = super().get_context_data(**kwargs)
 		return context
 
+class PurchaseInvestmentView(CreateView):
+	'''A view for purchasing an investment'''
+	fields = ['ticker_symbol', 'name', 'number_of_shares', 'purchase_price', 'investment_type', 'current_price', 'purchase_date']
+	template_name = 'investmentservices/purchase_investment.html'
+	success_url = reverse_lazy('shared-investments-list', )
+	model = SharedInvestment
