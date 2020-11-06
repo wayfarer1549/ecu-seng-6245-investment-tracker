@@ -8,11 +8,14 @@ class Account(models.Model):
 	account_number = models.CharField(max_length=20)
 	#account_owner = models.ForeignKey()
 	advisor = models.CharField(max_length=200)
-	#portfolio
+	investment_balance = models.DecimalField(max_digits=22, decimal_places=2)
 	cash_balance = models.DecimalField(max_digits=22, decimal_places=2)
 
 	def get_absolute_url(self):
 		return reverse('account-detail', kwargs={'pk': self.pk})
+
+	def get_account_balance(self):
+		return self.investment_balance + self.cash_balance
 
 class Investment(models.Model):
 	'''Overview Represents an investment in a customer's portfolio'''
