@@ -60,16 +60,16 @@ class SharedInvestment(Investment):
 	def update_share_count(this, share_count):
 		'''updates this model with a new share count'''
 		if sharecount > 0:
-			this.number_of_shares += sharecount
+			self.number_of_shares += sharecount
 		else:
-			number_of_shares -= sharecount
+			self.number_of_shares -= sharecount
 
-		this.save()
+		self.save()
 
 	def update_current_price(this, new_price):
 		'''updates the current share price of the investment'''
-		this.current_price = new_price
-		this.save()
+		self.current_price = new_price
+		self.save()
 
 
 
