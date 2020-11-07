@@ -23,5 +23,9 @@ class Financial_Advisor(Employee):
 		# Effects: Adds a customer (by customer_number) to this advisor's list of clients
 		# Parameter must be a string of length 8 matching format noted in
 		# get_current_clients()
-
-		self.client_list.append(investor_number)
+		if investor_number is not str:
+			raise TypeError('Parameter must be an str object')
+		elif len(date) != 8:
+			raise ValueError('Parameter must be of length 8 and in the format ABCD1234')
+		else:
+			self.client_list.append(investor_number)

@@ -56,15 +56,26 @@ class SharedInvestment(Investment):
 
 	def update_share_price(self, new_price):
 		# Effects: updates the current price of this investment based on the market price
-		self.current_price = new_price
+		if new_price is not float:
+			raise TypeError('Parameter must be an float')
+		elif amount < 0:
+			raise ValueError('Parameter should be greater than or equal to 0')
+		else:
+			self.current_price = new_price
 
 	def update_shares(self, share_count):
 		# Effects: increases the number of shares purchased (positive integer)
 		# or decreases the number of shares purchased (negative integer)
-		if share_count > 0:
-			self.number_of_shares += share_count
+
+		if share_count is not int:
+			raise TypeError('Parameter must be an integer')
+		elif amount < 0:
+			raise ValueError('Parameter should be greater than or equal to 0')
 		else:
-			self.number_of_shares -= share_count
+			if share_count > 0:
+				self.number_of_shares += share_count
+			else:
+				self.number_of_shares -= share_count
 
 	def __str__(self):
 		return str(self.ticker_symbol)

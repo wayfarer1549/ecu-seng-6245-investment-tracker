@@ -13,8 +13,12 @@ class Employee(User):
 		# Effects: Sets this employee's hire date
 		# parameter must be a string in format: xxxx-xx-xx i.e. year-month-day
 		# Example 2020-01-25
-
-		self.hire_date = date # expects a string in this format: '''2020-01-01'''
+		if date is not str:
+			raise TypeError('Parameter must be an str object')
+		elif len(date) != 10:
+			raise ValueError('Parameter string must be length 10 & in the following format: xxxx-xx-xx i.e. year-month-day')
+		else:
+			self.hire_date = date # expects a string in this format: '''2020-01-01'''
 
 	def get_hire_date(self):
 		# Effects: Retrieves this employee's hire date

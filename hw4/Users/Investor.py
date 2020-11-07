@@ -18,12 +18,16 @@ class Investor(User):
 		# corresponding to first four letters of client
 		# last name and 4 digits such as the year they became customer
 		# i.e. PHIL2014
-		self.account_number = number # expects a string
-		self.active = True
+		if number is not str:
+			raise TypeError('Parameter must be an str object')
+		elif len(number) != 8:
+			raise ValueError('Parameter must be of length 8 and in the format PHIL2014')
+		else:
+			self.account_number = number # expects a string
+			self.active = True
 
 	def close_account(self):
 		# Effects: Closes this customer's account
 		# Sets active to false
 		# No input parameter, so no input domain to specify
-
 		self.active = False

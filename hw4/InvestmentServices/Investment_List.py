@@ -1,4 +1,4 @@
-
+import Investment
 class Investment_List():
 	# Overview: An investment list contains a list of all investments owned by a customer
 	# I.E. it represents a customer's portfolio
@@ -19,20 +19,33 @@ class Investment_List():
 	def purchase_investment(self, investment):
 		# Effects: adds the investment parameter to the customer's
 		# portfolio.
-		# Parameter should accept a valid investment object
-		self.portfolio.append(investment)
+		# Parameter should accept an investment object
+		if investment is not Investment:
+			raise TypeError('Parameter must be an Investment object')
+		else:
+			self.portfolio.append(investment)
 
 	def sell_investment(self, investment):
 		# Effects: removes the investment parameter to the customer's
 		# portfolio.
 		# Parameter should accept a valid investment object
-		self.portfolio[investment].remove()
+		if investment is not Investment:
+			raise TypeError('Parameter must be an Investment object')
+		else:
+			self.portfolio[investment].remove()
 
 	def get_investment_details(self, symbol):
 		# Effects returns the investment details for the investment specified
 		# by symbol.
 		# Symbol should be a string of minimum length 1 and maximum length 4
 		# containing only alphabetic characters.
-		for i in portfolio:
-			if str(i) == symbol:
-				return str(i)
+		if symbol is not str:
+			raise TypeError('Parameter must be a string')
+		elif len(symbol) < 1:
+			raise ValueError('Parameter length should be greater than 0')
+		elif len(symbol) < 1:
+			raise ValueError('Parameter length should be less than 5')
+		else:
+			for i in portfolio:
+				if str(i) == symbol:
+					return str(i)

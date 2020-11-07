@@ -34,12 +34,22 @@ class Account():
 		# Effects: changes the current advisor of this account based on advisor_id
 		# Parameter should be a string of length 8 consisting of alphanumeric characters
 		# i.e. PHIL2020
-		self.advisor_id = new_advisor_id
+		if new_advisor_id is not str:
+			raise TypeError('Parameter must be a string')
+		elif len(new_advisor_id) != 8:
+			raise ValueError('Parameter string should be length of 8')
+		else:
+			self.advisor_id = new_advisor_id
 
 	def deposit_cash(self, amount):
 		# Effects: deposits cash to this account
 		# Parameter should be a non-negative float value
-		self.cash_balance += amount
+		if amount is not float:
+			raise TypeError('Parameter must be a float')
+		elif amount < 0:
+			raise ValueError('Parameter should be greater than or equal to 0')
+		else:
+			self.cash_balance += amount
 
 	def withdraw_cash(self, amount):
 		# Effects: withdraw cash from this account
@@ -50,10 +60,15 @@ class Account():
 			assert(self.cash_balance >= 0)
 		except:
 			throw NegativeBalanceException'''
-		result = cash_balance - amount
-		if result >= 0
-			self.cash_balance = result
+		if amount is not float:
+			raise TypeError('Parameter must be a float')
+		elif amount < 0:
+			raise ValueError('Parameter should be greater than or equal to 0')
 		else:
-			difference = abs(result)
-			new_withdrawal = amount - difference
-			self.cash_balance -= new_withdrawal
+			result = cash_balance - amount
+			if result >= 0
+				self.cash_balance = result
+			else:
+				difference = abs(result)
+				new_withdrawal = amount - difference
+				self.cash_balance -= new_withdrawal
