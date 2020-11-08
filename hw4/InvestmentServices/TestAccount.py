@@ -24,7 +24,7 @@ class TestAccount(unittest.TestCase):
 			self.new_account.advisor_id,
 			advisor_id)
 
-	def test_change_advisor(self):
+	def test_change_advisor_valid_input(self):
 		old_advisor = 'LUTH1517'
 		new_advisor = 'CRAN1549'
 
@@ -36,7 +36,17 @@ class TestAccount(unittest.TestCase):
 			self.new_account.advisor_id,
 			new_advisor)
 
-	def test_deposit_cash(self):
+	def test_change_advisor_invalid_inputs(self):
+		new_advisor = '100'
+
+		with self.assertRaises(TypeError):
+			self.new_account.change_advisor(new_advisor)
+		new_advisor = 'CRANMER'
+		with self.assertRaises(ValueError):
+			self.new_account.change_advisor(new_advisor)
+		
+
+	def test_deposit_cash_valid_input(self):
 		deposit_amt = 500.0
 		self.new_account.deposit_cash(deposit_amt)
 
@@ -44,15 +54,29 @@ class TestAccount(unittest.TestCase):
 			self.new_account.cash_balance,
 			deposit_amt)
 
-	def test_withdraw_cash(self):
+	def test_deposit_cash_invalid_inputs(self):
+		deposit_amt = 500
+		with self.assertRaises(TypeError):
+			self.new_account.deposit_cash(deposit_amt)
+		deposit_amt = -100.0
+		with self.assertRaises(ValueError):
+			self.new_account.deposit_cash(deposit_amt)
+
+	def test_withdraw_cash_valid_input(self):
 		withdrawal_amt = 250.0
-		self.new_account.withdraw_cash(deposit_amt)
+		self.new_account.withdraw_cash(withdrawal_amt)
 
 		self.assertEqual(
 			self.new_account.cash_balance,
 			withdrawal_amt)
 
-
+	def test_withdraw_cash_invalid_inputs(self):
+		withdrawal_amt = 250
+		with self.assertRaises(TypeError):
+			self.new_account.withdraw_cash(withdrawal_amt)
+		withdrawal_amt = -100.0
+		with self.assertRaises(ValueError):
+			self.new_account.withdraw_cash(withdrawal_amt)
 
 
 	def test_current_cash(self):

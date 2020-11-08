@@ -48,6 +48,15 @@ class TestEmployee(unittest.TestCase):
 		self.assertEqual(
 			self.new_employee.hire_date, date)
 
+	def test_set_hire_date_invalid_inputs(self):
+		with self.assertRaises(ValueError):
+			date = '2020-11-0'
+			self.new_employee.set_hire_date(date)
+		with self.assertRaises(TypeError):
+			date = 20201101
+			self.new_employee.set_hire_date(date)
+		
+
 	def test_get_hire_date(self):
 		date = '2020-10-01'
 		self.assertEqual(

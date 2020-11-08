@@ -74,3 +74,11 @@ class TestFinancialAdvisor(unittest.TestCase):
 			self.new_advisor.update_clients(investor)
 		self.assertEqual(len(self.new_advisor.get_current_clients()), len(investors))
 
+	def test_get_current_clients_invalid_inputs(self):
+		with self.assertRaises(ValueError):
+			inv1 = 'CRAN15'
+			self.new_advisor.update_clients(inv1)
+		with self.assertRaises(TypeError):
+			inv1 = 15491689
+			self.new_advisor.update_clients(inv1)
+

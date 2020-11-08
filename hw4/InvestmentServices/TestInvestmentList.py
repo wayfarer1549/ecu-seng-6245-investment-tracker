@@ -55,6 +55,11 @@ class TestInvestmentList(unittest.TestCase):
 			self.assertIn(
 				inv, self.new_inv_list.get_investments())
 
+	def test_purchase_investment_invalid_input(self):
+		with self.assertRaises(TypeError):
+			inv = 'AAPL'
+			self.new_inv_list.purchase_investment(inv)
+
 	def test_sell_investments(self):
 		inv1 = SharedInvestment(
 			'2020-08-31',
@@ -81,6 +86,11 @@ class TestInvestmentList(unittest.TestCase):
 
 		self.assertNotIn(inv2, self.new_inv_list.get_investments())
 		self.assertIn(inv1, self.new_inv_list.get_investments())
+
+	def test_sell_investments_invalid_input(self):
+		with self.assertRaises(TypeError):
+			inv = 'AAPL'
+			self.new_inv_list.sell_investment(inv)
 
 	def test_get_investments(self):
 		inv1 = SharedInvestment(
@@ -117,4 +127,16 @@ class TestInvestmentList(unittest.TestCase):
 			109.0,
 			'Stock')
 
-		self.new_inv_list.purchase_investment(inv1)
+		self.new_inv_list.get_investment_details(symbol)
+
+	def test_investment_details_invalid_inputs(self):
+		with self.assertRaises(TypeError):
+			symbol = 1001
+			self.new_inv_list.get_investment_details(symbol)
+		with self.assertRaises(ValueError):
+			symbol = AAAPL
+			self.new_inv_list.get_investment_details(symbol)
+		with self.assertRaises(ValueError):
+			symbol = ''
+			self.new_inv_list.get_investment_details(symbol)
+

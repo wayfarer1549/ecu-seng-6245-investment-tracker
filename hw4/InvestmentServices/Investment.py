@@ -58,7 +58,7 @@ class SharedInvestment(Investment):
 		# Effects: updates the current price of this investment based on the market price
 		if new_price is not float:
 			raise TypeError('Parameter must be an float')
-		elif amount < 0:
+		elif amount < 0.0:
 			raise ValueError('Parameter should be greater than or equal to 0')
 		else:
 			self.current_price = new_price
@@ -69,8 +69,6 @@ class SharedInvestment(Investment):
 
 		if share_count is not int:
 			raise TypeError('Parameter must be an integer')
-		elif amount < 0:
-			raise ValueError('Parameter should be greater than or equal to 0')
 		else:
 			if share_count > 0:
 				self.number_of_shares += share_count

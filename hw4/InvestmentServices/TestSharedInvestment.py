@@ -53,6 +53,17 @@ class TestSharedInvestment(unittest.TestCase):
 			self.new_stock.current_price,
 			new_price)
 
+	def test_update_share_price_invalid_inputs(self):
+		with self.assertRaises(TypeError):
+			new_price = 115
+			self.new_stock.update_share_price(new_price)
+		with self.assertRaises(ValueError):
+			new_price = -120.50
+			self.new_stock.update_share_price(new_price)
+		with self.assertRaises(ValueError):
+			new_price = -120.50
+			self.new_stock.update_share_price(new_price)
+
 	def test_update_shares(self):
 		old_shares = 50
 		new_shares = 73
@@ -61,6 +72,11 @@ class TestSharedInvestment(unittest.TestCase):
 		self.assertEqual(
 			self.new_stock.number_of_shares,
 			old_shares + new_shares)
+
+	def test_update_shares_invalid_inputs(self):
+		with self.assertRaises(TypeError):
+			new_shares = 73.0
+			self.new_stock.update_shares(new_shares)
 
 	def test_str(self):
 		symbol = 'AAPL'
