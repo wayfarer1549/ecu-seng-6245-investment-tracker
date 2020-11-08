@@ -66,7 +66,7 @@ class Account():
 			raise ValueError('Parameter should be greater than or equal to 0')
 		else:
 			result = cash_balance - amount
-			if result >= 0
+			if result >= 0:
 				self.cash_balance = result
 			else:
 				difference = abs(result)

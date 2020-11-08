@@ -1,4 +1,4 @@
-import Employee
+from Employee import Employee
 
 class Financial_Advisor(Employee):
 	# Overview: A Financial Advisor advises customers on investments & acts as a stock broker

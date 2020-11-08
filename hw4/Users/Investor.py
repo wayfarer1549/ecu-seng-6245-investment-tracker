@@ -1,5 +1,7 @@
-import User
-from investor_services import Account
+import sys
+sys.path.append('../')
+from User import User
+from InvestmentServices import Account
 
 class Investor(User):
 	# Overview: Represents an investor of the financial services company
