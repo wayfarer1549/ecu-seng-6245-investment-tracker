@@ -1,5 +1,5 @@
 import unittest
-import Account
+from Account import Account
 
 class TestAccount(unittest.TestCase):
 
@@ -10,15 +10,13 @@ class TestAccount(unittest.TestCase):
 			acct_number,
 			advisor_id)
 
-	def tearDown(self):
-		self.new_account.dispose()
 
 	def test_account_constructor(self):
 		acct_number = 'BUNY1689'
 		advisor_id = 'LUTH1517'
 
 		self.assertEqual(
-			self.new_account.acct_number,
+			self.new_account.account_number,
 			acct_number)
 		self.assertEqual(
 			self.new_account.advisor_id,
@@ -37,12 +35,12 @@ class TestAccount(unittest.TestCase):
 			new_advisor)
 
 	def test_change_advisor_invalid_inputs(self):
-		new_advisor = '100'
 
 		with self.assertRaises(TypeError):
+			new_advisor = 100
 			self.new_account.change_advisor(new_advisor)
-		new_advisor = 'CRANMER'
 		with self.assertRaises(ValueError):
+			new_advisor = 'CRANMER'
 			self.new_account.change_advisor(new_advisor)
 		
 
@@ -63,6 +61,7 @@ class TestAccount(unittest.TestCase):
 			self.new_account.deposit_cash(deposit_amt)
 
 	def test_withdraw_cash_valid_input(self):
+		self.new_account.deposit_cash(500.0)
 		withdrawal_amt = 250.0
 		self.new_account.withdraw_cash(withdrawal_amt)
 
@@ -107,5 +106,6 @@ class TestAccount(unittest.TestCase):
 			self.new_account.get_account_balance(),
 			investment_value + cash_balance)
 
-
+if __name__ == '__main__':
+    unittest.main()
 

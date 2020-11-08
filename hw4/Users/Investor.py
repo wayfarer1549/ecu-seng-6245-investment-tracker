@@ -20,7 +20,7 @@ class Investor(User):
 		# corresponding to first four letters of client
 		# last name and 4 digits such as the year they became customer
 		# i.e. PHIL2014
-		if number is not str:
+		if not isinstance(number, str):
 			raise TypeError('Parameter must be an str object')
 		elif len(number) != 8:
 			raise ValueError('Parameter must be of length 8 and in the format PHIL2014')

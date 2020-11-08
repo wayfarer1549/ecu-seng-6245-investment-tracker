@@ -25,40 +25,40 @@ class User():
 		# Must return as boolean value
 		return self.status
 
-	def set_first_name(name):
+	def set_first_name(self, name):
 		# Effects sets the first name of the user
 		# Accepts a non-empty string
-		if name is not str:
+		if not isinstance(name, str):
 			raise TypeError('Parameter must be an str object')
 		elif len(name) == 0:
 			raise ValueError('Parameter must be a non-empty string')
 		else:
 			self.first_name = name
 
-	def set_last_name(name):
+	def set_last_name(self, name):
 		# Effects sets the last name of the user
 		# Accepts a non-empty string
-		if name is not str:
+		if not isinstance(name, str):
 			raise TypeError('Parameter must be an str object')
 		elif len(name) == 0:
 			raise ValueError('Parameter must be a non-empty string')
 		else:
 			self.last_name = name
 
-	def update_phone(phone):
+	def update_phone(self, phone):
 		# Effects updates the user's phone number to format 252-555-1234
 		# with length 12
-		if phone is not str:
+		if not isinstance(phone, str):
 			raise TypeError('Parameter must be an str object')
 		elif len(phone) != 12:
 			raise ValueError('Parameter must be length of 12 in this format: 252-555-1234')
 		else:
 			self.phone_number = phone
 
-	def update_user_status(status):
+	def update_user_status(self, status):
 		# Effects changes the user's account status
 		# Accepts boolean parameter
-		if status is not bool:
+		if not isinstance(status, bool):
 			raise TypeError('Parameter must be a boolean object')
 		else:
 			self.status = status

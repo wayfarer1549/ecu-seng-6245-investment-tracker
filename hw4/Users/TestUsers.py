@@ -1,5 +1,5 @@
 import unittest
-import User
+from User import User
 
 class TestUser(unittest.TestCase):
 
@@ -49,10 +49,11 @@ class TestUser(unittest.TestCase):
 			self.new_user.is_active())
 
 	def test_set_first_name(self):
-		new_fn = 'Richard'
-		self.new_user.set_first_name(new_fn)
+		new_first_name = 'Richard'
+		
+		self.new_user.set_first_name(new_first_name)
 		self.assertEqual(
-			self.new_user.first_name, new_fn)
+			self.new_user.first_name, new_first_name)
 
 	def test_set_last_name(self):
 		new_ln = 'Baxter'
@@ -69,7 +70,7 @@ class TestUser(unittest.TestCase):
 	def test_update_user_status(self):
 		self.new_user.update_user_status(True)
 		self.assertTrue(
-			self.is_active)
+			self.new_user.is_active())
 
-	def tearDown(self):
-		self.new_user.dispose()
+if __name__ == '__main__':
+    unittest.main()

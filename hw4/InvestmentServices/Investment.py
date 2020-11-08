@@ -29,7 +29,7 @@ class Bond(Investment):
 
 	# Methods
 	def get_yield(self):
-		return self.bond_type
+		return self.bond_yield
 
 	def get_bond_type(self):
 		return self.bond_type
@@ -46,7 +46,7 @@ class SharedInvestment(Investment):
 	# Attributes
 	def __init__(self, date, name, ticker_symbol, initial_shares, price, investment_type):
 		super().__init__(date, name)
-		self.ticker_sybmol = ticker_sybmol
+		self.ticker_symbol = ticker_symbol
 		self.number_of_shares = initial_shares
 		self.purchase_price = price
 		self.current_price = price
@@ -56,9 +56,9 @@ class SharedInvestment(Investment):
 
 	def update_share_price(self, new_price):
 		# Effects: updates the current price of this investment based on the market price
-		if new_price is not float:
-			raise TypeError('Parameter must be an float')
-		elif amount < 0.0:
+		if not isinstance(new_price, float):
+			raise TypeError('Parameter must be a float')
+		elif new_price < 0.0:
 			raise ValueError('Parameter should be greater than or equal to 0')
 		else:
 			self.current_price = new_price
@@ -67,7 +67,7 @@ class SharedInvestment(Investment):
 		# Effects: increases the number of shares purchased (positive integer)
 		# or decreases the number of shares purchased (negative integer)
 
-		if share_count is not int:
+		if not isinstance(share_count, int):
 			raise TypeError('Parameter must be an integer')
 		else:
 			if share_count > 0:

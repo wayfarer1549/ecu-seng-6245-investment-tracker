@@ -1,5 +1,5 @@
 import unittest
-import Investor
+from Investor import Investor
 
 class TestInvestor(unittest.TestCase):
 
@@ -16,8 +16,6 @@ class TestInvestor(unittest.TestCase):
 			phone_num,
 			status)
 
-	def tearDown(self):
-		self.new_investor.dispose()
 
 	def test_investor_constructor(self):
 		first_name = 'John'
@@ -41,9 +39,10 @@ class TestInvestor(unittest.TestCase):
 
 	def test_add_account(self):
 		acct_number = self.new_investor.last_name[:4] + str(2020)
-		self.new_investor(acct_number)
+		
+		self.new_investor.add_account(acct_number)
 		self.assertEqual(
-			self.new_investor.acct_number, acct_number)
+			self.new_investor.account_number, acct_number)
 		self.assertTrue(
 			self.new_investor.active)
 

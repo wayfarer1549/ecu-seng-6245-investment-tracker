@@ -1,5 +1,5 @@
 import unittest
-import Financial_Advisor
+from Financial_Advisor import Financial_Advisor
 
 class TestFinancialAdvisor(unittest.TestCase):
 
@@ -10,6 +10,7 @@ class TestFinancialAdvisor(unittest.TestCase):
 		phone_num = '252-989-5555'
 		status = True
 		date = '2020-10-01'
+		#print(date[:4])
 		advisor_id = last_name + date[:4]
 		self.new_advisor = Financial_Advisor(
 			advisor_id,
@@ -20,9 +21,6 @@ class TestFinancialAdvisor(unittest.TestCase):
 			status,
 			date)
 
-	def tearDown(self):
-		self.new_advisor.dispose()
-
 	def test_advisor_constructor(self):
 		first_name = 'John'
 		last_name = 'Bunyan'
@@ -30,7 +28,7 @@ class TestFinancialAdvisor(unittest.TestCase):
 		phone_num = '252-989-5555'
 		status = True
 		date = '2020-10-01'
-		advisor_id = last_name + 'date[:4]'
+		advisor_id = last_name + date[:4]
 		
 		self.assertEqual(
 			self.new_advisor.first_name, first_name)
@@ -56,7 +54,7 @@ class TestFinancialAdvisor(unittest.TestCase):
 
 		# append to the client list
 		self.new_advisor.update_clients(inv1)
-		self.new_advisor.update_clients(inv1)
+		self.new_advisor.update_clients(inv2)
 		self.new_advisor.update_clients(inv3)
 
 
@@ -82,3 +80,5 @@ class TestFinancialAdvisor(unittest.TestCase):
 			inv1 = 15491689
 			self.new_advisor.update_clients(inv1)
 
+if __name__ == '__main__':
+    unittest.main()

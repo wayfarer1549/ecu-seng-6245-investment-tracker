@@ -1,14 +1,12 @@
 import unittest
-import Investment, Investment_List
+from Investment import Investment, SharedInvestment
+from Investment_List import Investment_List
 
 class TestInvestmentList(unittest.TestCase):
 
 	def setUp(self):
 		acct_number = 'CRAN1549'
 		self.new_inv_list = Investment_List(acct_number)
-
-	def tearDown(self):
-		self.new_investor.dispose()
 
 	def test_investment_list_constructor(self):
 		acct_number = 'CRAN1549'
@@ -134,9 +132,10 @@ class TestInvestmentList(unittest.TestCase):
 			symbol = 1001
 			self.new_inv_list.get_investment_details(symbol)
 		with self.assertRaises(ValueError):
-			symbol = AAAPL
+			symbol = 'AAAPL'
 			self.new_inv_list.get_investment_details(symbol)
 		with self.assertRaises(ValueError):
 			symbol = ''
 			self.new_inv_list.get_investment_details(symbol)
-
+if __name__ == '__main__':
+    unittest.main()

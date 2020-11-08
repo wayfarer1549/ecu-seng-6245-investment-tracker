@@ -1,5 +1,5 @@
 import unittest
-import SharedInvestment
+from Investment import SharedInvestment
 
 class TestSharedInvestment(unittest.TestCase):
 
@@ -20,9 +20,6 @@ class TestSharedInvestment(unittest.TestCase):
 			purchase_price,
 			inv_type)
 
-	def tearDown(self):
-		self.new_stock.dispose()
-
 	def test_shared_investment_constructor(self):
 		symbol = 'AAPL'
 		date = '2020-08-31'
@@ -33,7 +30,7 @@ class TestSharedInvestment(unittest.TestCase):
 		inv_type = 'Stock'
 
 		self.assertEqual(
-			self.new_stock.share_count,
+			self.new_stock.number_of_shares,
 			share_count)
 		self.assertEqual(
 			self.new_stock.purchase_price,
@@ -82,3 +79,6 @@ class TestSharedInvestment(unittest.TestCase):
 		symbol = 'AAPL'
 		self.assertEqual(
 			str(self.new_stock), symbol)
+
+if __name__ == '__main__':
+    unittest.main()

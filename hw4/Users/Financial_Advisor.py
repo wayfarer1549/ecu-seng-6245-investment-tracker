@@ -6,7 +6,7 @@ class Financial_Advisor(Employee):
 
 	# Attributes
 	def __init__(self, advisor_id, fn, ln, ssn, pn, st, date):
-		super().__init__(fn, ln, ssn, pn, st, date)
+		super().__init__(date, fn, ln, ssn, pn, st)
 		self.advisor_id = advisor_id
 		self.client_list = []
 
@@ -23,9 +23,9 @@ class Financial_Advisor(Employee):
 		# Effects: Adds a customer (by customer_number) to this advisor's list of clients
 		# Parameter must be a string of length 8 matching format noted in
 		# get_current_clients()
-		if investor_number is not str:
+		if not isinstance(investor_number, str):
 			raise TypeError('Parameter must be an str object')
-		elif len(date) != 8:
+		elif len(investor_number) != 8:
 			raise ValueError('Parameter must be of length 8 and in the format ABCD1234')
 		else:
 			self.client_list.append(investor_number)

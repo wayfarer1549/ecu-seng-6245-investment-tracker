@@ -1,5 +1,5 @@
 import unittest
-import Employee
+from Employee import Employee
 
 class TestEmployee(unittest.TestCase):
 
@@ -11,15 +11,16 @@ class TestEmployee(unittest.TestCase):
 		status = True
 		date = '2020-10-01'
 		self.new_employee = Employee(
+			date,
 			first_name,
 			last_name,
 			ssn,
 			phone_num,
 			status,
-			date)
+			)
 
-	def tearDown(self):
-		self.new_employee.dispose()
+	# def tearDown(self):
+	# 	self.new_employee.dispose()
 
 	def test_employee_constructor(self):
 		first_name = 'John'
@@ -44,6 +45,7 @@ class TestEmployee(unittest.TestCase):
 
 	def test_set_hire_date(self):
 		date = '2020-11-01'
+		
 		self.new_employee.set_hire_date(date)
 		self.assertEqual(
 			self.new_employee.hire_date, date)
@@ -59,10 +61,14 @@ class TestEmployee(unittest.TestCase):
 
 	def test_get_hire_date(self):
 		date = '2020-10-01'
+
 		self.assertEqual(
 			self.new_employee.get_hire_date(), date)
 
 	def test_change_status(self):
 		self.new_employee.change_status()
 		self.assertFalse(
-			self.new_employee)
+			self.new_employee.status)
+
+if __name__ == '__main__':
+    unittest.main()

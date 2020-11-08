@@ -34,7 +34,7 @@ class Account():
 		# Effects: changes the current advisor of this account based on advisor_id
 		# Parameter should be a string of length 8 consisting of alphanumeric characters
 		# i.e. PHIL2020
-		if new_advisor_id is not str:
+		if not isinstance(new_advisor_id, str):
 			raise TypeError('Parameter must be a string')
 		elif len(new_advisor_id) != 8:
 			raise ValueError('Parameter string should be length of 8')
@@ -44,9 +44,9 @@ class Account():
 	def deposit_cash(self, amount):
 		# Effects: deposits cash to this account
 		# Parameter should be a non-negative float value
-		if amount is not float:
+		if not isinstance(amount, float):
 			raise TypeError('Parameter must be a float')
-		elif amount < 0:
+		elif amount < 0.0:
 			raise ValueError('Parameter should be greater than or equal to 0')
 		else:
 			self.cash_balance += amount
@@ -60,12 +60,12 @@ class Account():
 			assert(self.cash_balance >= 0)
 		except:
 			throw NegativeBalanceException'''
-		if amount is not float:
+		if not isinstance(amount, float):
 			raise TypeError('Parameter must be a float')
-		elif amount < 0:
+		elif amount < 0.0:
 			raise ValueError('Parameter should be greater than or equal to 0')
 		else:
-			result = cash_balance - amount
+			result = self.cash_balance - amount
 			if result >= 0:
 				self.cash_balance = result
 			else:

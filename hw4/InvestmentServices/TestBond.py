@@ -1,4 +1,5 @@
 import unittest
+from Investment import Bond
 
 class TestBond(unittest.TestCase):
 
@@ -22,15 +23,12 @@ class TestBond(unittest.TestCase):
 			maturity,
 			payment_count)
 
-	def tearDown(self):
-		self.new_bond.dispose()
-
 	def test_bond_constructor(self):
 		price = 1500.0
 		payment_count = 20
 
 		self.assertEqual(
-			self.new_bond.price,
+			self.new_bond.purchase_price,
 			price)
 		self.assertEqual(
 			self.new_bond.number_of_payments,
@@ -40,7 +38,7 @@ class TestBond(unittest.TestCase):
 		#bond_type = "U.S. Treasury Note"
 		self.assertEqual(
 			self.new_bond.get_yield(),
-			bond_yield = 2.25)
+			2.25)
 
 
 	def test_get_bond_type(self):
@@ -52,7 +50,7 @@ class TestBond(unittest.TestCase):
 	def test_get_maturity(self):
 		maturity = "2030"
 		self.assertEqual(
-			self.new_bond.test_get_maturity(),
+			self.new_bond.get_maturity(),
 			maturity)
 
 	def test_str(self):
@@ -63,7 +61,8 @@ class TestBond(unittest.TestCase):
 			bond_id)
 
 
-
+if __name__ == '__main__':
+    unittest.main()
 
 
 

@@ -1,4 +1,4 @@
-import User
+from User import User
 
 class Employee(User):
 	# Overview: A class representing an employee in the company
@@ -13,7 +13,8 @@ class Employee(User):
 		# Effects: Sets this employee's hire date
 		# parameter must be a string in format: xxxx-xx-xx i.e. year-month-day
 		# Example 2020-01-25
-		if date is not str:
+		
+		if not isinstance(date, str):
 			raise TypeError('Parameter must be an str object')
 		elif len(date) != 10:
 			raise ValueError('Parameter string must be length 10 & in the following format: xxxx-xx-xx i.e. year-month-day')
@@ -23,7 +24,7 @@ class Employee(User):
 	def get_hire_date(self):
 		# Effects: Retrieves this employee's hire date
 		# must return a string in the format specified for set_hire_date() above
-		self.hire_date
+		return self.hire_date
 
 	def change_status(self):
 		# Effects: Updates this employee's status
