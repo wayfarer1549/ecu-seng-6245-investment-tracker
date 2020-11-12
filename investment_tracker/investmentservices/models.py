@@ -28,6 +28,10 @@ class Account(models.Model):
 
 	def __str__(self):
 		return self.account_number
+
+    def get_acct_number(self):
+    	return self.account_number
+
 class Investment(models.Model):
 	'''Overview Represents an investment in a customer's portfolio'''
 
@@ -135,7 +139,14 @@ class InvestmentList(models.Model):
 class Transaction(models.Model):
 	'''Overview: Represents an investment transaction'''
 	# Attributes
+	account = models.ForeignKey(Account, on_delete=models.CASCADE) #models.CharField(max_length=20)
 	purchase_date = models.DateField('date purchased')
+	transaction_amount = models.DecimalField(max_digits=22, decimal_places=2)
+	share_count = models.IntegerField()
+
+	def __str__(self):
+		return self.purchase_date + account.get_acct_number()
+
 
 
 
