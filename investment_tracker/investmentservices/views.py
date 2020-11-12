@@ -60,3 +60,32 @@ class PurchaseInvestmentView(CreateView):
 	template_name = 'investmentservices/purchase_investment.html'
 	success_url = reverse_lazy('shared-investments-list', )
 	model = SharedInvestment
+
+
+class SellInvestmentView():
+	'''A view for selling an investment'''
+	pass
+
+class MakeDepositView(UpdateView):
+	'''A view for depositing cash to an account'''
+	pass
+
+class WithdrawCashView(UpdateView):
+	'''A view for withdrawing cash from an account'''
+	pass
+
+class StocksListView(ListView):
+	'''A view for listing all stocks in the current user's portfolio'''
+	pass
+
+class ETFListView(ListView):
+	'''A view for listing all ETFs in the current user's portfolio'''
+	pass
+
+class MutualFundListView(ListView):
+	'''A view for listing all Mutual Funds in the current user's portfolio'''
+	pass
+
+class InvestmentDetailView(DetailView):
+	'''A Detail view for a particular investment in the current user's portfolio'''
+	pass
