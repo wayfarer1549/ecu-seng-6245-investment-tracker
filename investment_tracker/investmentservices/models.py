@@ -14,14 +14,17 @@ class Account(models.Model):
 	def get_absolute_url(self):
 		return reverse('account-detail', kwargs={'pk': self.pk})
 
+	@property
 	def get_account_balance(self):
 		return self.investment_balance + self.cash_balance
 
+	@property 
 	def get_cash_balance(self):
 		return self.cash_balance
 
+	@property 
 	def get_investment_balance(self):
-		return self.cash_balance
+		return self.investment_balance
 
 class Investment(models.Model):
 	'''Overview Represents an investment in a customer's portfolio'''
@@ -36,11 +39,45 @@ class Investment(models.Model):
 class Bond(Investment):
 	'''Overview: Represents a government or corporate bond investment in a customer's portfolio'''
 
+	BOND_TYPE_CHOICES = [
+
+		('USTB', 'U.S. Treasury Bill'),
+		('USTN', 'U.S. Treasury Note'),
+		('USTBD', 'U.S. Treasury Bond'),
+		('CORP', 'Corporate Bond'),
+		('MUNC', 'Municipal Bond'),
+		('INTL', 'International Bond')
+
+	]
+
 	# Attributes
 	bond_yield = models.FloatField() # the interest rate of the bond
-	bond_type = models.CharField(max_length=200)
+	bond_type = models.CharField(max_length=5, choices=BOND_TYPE_CHOICES)
 	maturity_date = models.DateField('maturity date of the bond')
 	number_of_payments = models.IntegerField() # how many payments of interest this bond pays per year
+
+	@property
+	def get_yield(self):
+		return self.bond_yield
+
+	@property
+	def get_type(self):
+		return self.bond_type
+
+	@property
+	def get_maturity(self):
+		return str(self.maturity_date)
+
+	@property
+	def get_yearly_payment_count(self):
+		return self.number_of_payments
+
+	@property
+	def calculate_remaining_payments(self):
+		#TODO: Return the number of remaining payments
+		# Calculate time delta and * by number of payments per year
+		pass
+	
 
 class SharedInvestment(Investment):
 	'''Overview: A shared investment is a stock, mutual fund, or Exchange Traded Fund (ETF) comprised
