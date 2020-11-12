@@ -61,6 +61,7 @@ class Bond(Investment):
 	bond_type = models.CharField(max_length=5, choices=BOND_TYPE_CHOICES)
 	maturity_date = models.DateField('maturity date of the bond')
 	number_of_payments = models.IntegerField() # how many payments of interest this bond pays per year
+	purchase_price = models.DecimalField(max_digits=12, decimal_places=2) # price of the bond when purchased
 
 	@property
 	def get_yield(self):
@@ -139,14 +140,30 @@ class InvestmentList(models.Model):
 class Transaction(models.Model):
 	'''Overview: Represents an investment transaction'''
 	# Attributes
+
+	TRANSACTION_TYPES = [
+		('BUY', 'Purchased')
+		('SELL', 'Sold')
+	]
 	account = models.ForeignKey(Account, on_delete=models.CASCADE) #models.CharField(max_length=20)
 	purchase_date = models.DateField('date purchased')
 	transaction_amount = models.DecimalField(max_digits=22, decimal_places=2)
-	share_count = models.IntegerField()
+	transaction_type = models.CharField(max_length=4, choices=TRANSACTION_TYPES)
+
+	class Meta:
+		abstract = True
 
 	def __str__(self):
 		return self.purchase_date + account.get_acct_number()
 
+class BondTransaction(Transaction):
+	'''Represents a transaction involving a bond investment'''
+	investment = models.ForeignKey(Bond, on_delete=models.CASCADE)
+
+class SharedTransaction(Transaction):
+	'''Represents a transaction involving a shared investment'''
+	investment = models.ForeignKey(SharedInvestment, on_delete=models.CASCADE)
+	share_count = models.IntegerField()
 
 
 
