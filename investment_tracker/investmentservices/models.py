@@ -26,6 +26,8 @@ class Account(models.Model):
 	def get_investment_balance(self):
 		return self.investment_balance
 
+	def __str__(self):
+		return self.account_number
 class Investment(models.Model):
 	'''Overview Represents an investment in a customer's portfolio'''
 
@@ -77,6 +79,9 @@ class Bond(Investment):
 		#TODO: Return the number of remaining payments
 		# Calculate time delta and * by number of payments per year
 		pass
+
+	def __str__(self):
+		return self.bond_type + ' ' + str(self.get_yield) + ' ' + str(self.purchase_date)
 	
 
 class SharedInvestment(Investment):
@@ -92,7 +97,7 @@ class SharedInvestment(Investment):
 
 	# Attributes
 	ticker_symbol = models.CharField(max_length=6) # investment's ticker symbol
-	number_of_shares = models.IntegerField() # possible to have fractional shares
+	number_of_shares = models.IntegerField() # possible to have fractional shares?
 	purchase_price = models.DecimalField(max_digits=12, decimal_places=2) # price per share when purchased
 	current_price = models.DecimalField(max_digits=12, decimal_places=2) # current price per share
 	investment_type = models.CharField(
@@ -113,6 +118,9 @@ class SharedInvestment(Investment):
 		'''updates the current share price of the investment'''
 		self.current_price = new_price
 		self.save()
+
+	def __str__(self):
+		return self.ticker_symbol
 
 
 
