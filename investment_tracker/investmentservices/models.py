@@ -29,8 +29,8 @@ class Account(models.Model):
 	def __str__(self):
 		return self.account_number
 
-    def get_acct_number(self):
-    	return self.account_number
+	def get_acct_number(self):
+		return self.account_number
 
 class Investment(models.Model):
 	'''Overview Represents an investment in a customer's portfolio'''
@@ -52,7 +52,7 @@ class Bond(Investment):
 		('USTBD', 'U.S. Treasury Bond'),
 		('CORP', 'Corporate Bond'),
 		('MUNC', 'Municipal Bond'),
-		('INTL', 'International Bond')
+		('INTL', 'International Bond'),
 
 	]
 
@@ -96,7 +96,7 @@ class SharedInvestment(Investment):
 	SHARED_INVESTMENT_CHOICES = [
 		('STK', 'Stock'),
 		('MUF', 'Mutual Fund'),
-		('ETF', 'Exchange Traded Fund')
+		('ETF', 'Exchange Traded Fund'),
 
 	]
 
@@ -142,9 +142,10 @@ class Transaction(models.Model):
 	# Attributes
 
 	TRANSACTION_TYPES = [
-		('BUY', 'Purchased')
-		('SELL', 'Sold')
+		('BUY', 'Purchased'),
+		('SELL', 'Sold'),
 	]
+
 	account = models.ForeignKey(Account, on_delete=models.CASCADE) #models.CharField(max_length=20)
 	purchase_date = models.DateField('date purchased')
 	transaction_amount = models.DecimalField(max_digits=22, decimal_places=2)
