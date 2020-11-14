@@ -1,5 +1,5 @@
 from django.db import models
-from users.models import Investor, FinancialAdvisor
+from users.models import FinancialUser
 
 # Create your models here.
 class Account(models.Model):
@@ -7,7 +7,7 @@ class Account(models.Model):
 
 	# Attributes
 	account_number = models.CharField(max_length=20)
-	#account_owner = models.ForeignKey()
+	account_owner = models.OneToOneField(FinancialUser, on_delete=models.CASCADE)
 	advisor = models.CharField(max_length=200)
 	investment_balance = models.DecimalField(max_digits=22, decimal_places=2)
 	cash_balance = models.DecimalField(max_digits=22, decimal_places=2)
@@ -30,7 +30,7 @@ class Account(models.Model):
 
 	def __str__(self):
 		return self.account_number
-		
+
 	@property
 	def get_acct_number(self):
 		return self.account_number

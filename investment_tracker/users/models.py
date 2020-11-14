@@ -3,8 +3,8 @@ from django.db import models
 from investmentservices.models import Account
 
 # Create your models here.
-class BaseUser(AbstractUser):
-	'''Overview: Represents a base user in the system'''
+class FinancialUser(AbstractUser):
+	'''Overview: Represents a user in the system'''
 
 	#Attributes
 	ssn = models.CharField(max_length=11, null=True, blank=False)
@@ -25,8 +25,9 @@ class BaseUser(AbstractUser):
 	def get_phone_number(self):
 		return self.primary_phone_number
 	
+'''
 class Investor(BaseUser):
-	'''Overview: Represents an individual investor'''
+	Overview: Represents an individual investor
 
 	# Attributes
 	account = models.OneToOneField(
@@ -36,7 +37,7 @@ class Investor(BaseUser):
 		)
 
 class FinancialAdvisor(BaseUser):
-	'''Overview: Represents a Financial Advisor'''
+	Overview: Represents a Financial Advisor
 	hire_date = models.DateField("date of hire")
-
+'''
 
