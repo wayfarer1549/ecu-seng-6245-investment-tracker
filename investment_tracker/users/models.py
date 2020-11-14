@@ -1,3 +1,26 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
+from investmentservices.models import Account
 
 # Create your models here.
+class BaseUser(AbstractUser):
+	'''Overview: Represents a base user in the system'''
+
+	#Attributes
+	ssn = models.CharField(max_length=11, null=True, blank=False)
+	primary_phone_number = models.CharField(max_length=10, null=True, blank=True)
+
+	@property
+	def get_full_name(self):
+		'''Returns the concatenation of the Abstract User's first & last name attributes'''
+		return self.first_name + ' ' + self.last_name
+
+
+	@property
+	def get_ssn(self):
+		'''Returns the social security number'''
+		return self.ssn
+
+	@property
+	def get_phone_number(self):
+		return self.primary_phone_number
