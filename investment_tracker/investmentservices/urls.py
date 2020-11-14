@@ -10,4 +10,5 @@ urlpatterns = [
 	path('account/<int:pk>/', AccountDetailView.as_view(), name='account-detail'),
 	path('account/<int:pk>/update', AccountUpdate.as_view(), name='account-update'),
 	path('purchase', PurchaseInvestmentView.as_view(), name='purchase-investment'),
+	path('sell', SellInvestmentView.as_view(), name='sell-investment'),
 ]

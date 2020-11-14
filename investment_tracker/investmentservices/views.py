@@ -49,7 +49,7 @@ class TransactionsListView(ListView):
 
 	model = Transaction
 	template_name = 'investmentservices/transactions_list.html'
-	
+
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 		return context
@@ -60,11 +60,16 @@ class PurchaseInvestmentView(CreateView):
 	template_name = 'investmentservices/purchase_investment.html'
 	success_url = reverse_lazy('shared-investments-list', )
 	model = SharedInvestment
+	#TODO: Update Cash Balance & Exception Handling depending on Cash Balance
 
 
-class SellInvestmentView():
+
+class SellInvestmentView(UpdateView):
 	'''A view for selling an investment'''
-	pass
+	model = SharedInvestment
+	fields = ['ticker_symbol', 'number_of_shares', ]
+	template_name = 'investmentservices/sell_investment.html'
+	success_url = reverse_lazy('shared-investments-list', )
 
 class MakeDepositView(UpdateView):
 	'''A view for depositing cash to an account'''
