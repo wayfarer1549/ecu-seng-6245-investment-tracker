@@ -1,0 +1,11 @@
+<h1>Accounts</h1>
+
+<ul>
+
+{% for account in object_list %}
+	<li>{{account.get_acct_number}} {{account.get_account_balance}}</li>
+{% empty %}
+	<li>No accounts to display.</li>
+{% endfor %}
+
+</ul>

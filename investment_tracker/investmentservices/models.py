@@ -29,7 +29,8 @@ class Account(models.Model):
 
 	def __str__(self):
 		return self.account_number
-
+		
+	@property
 	def get_acct_number(self):
 		return self.account_number
 

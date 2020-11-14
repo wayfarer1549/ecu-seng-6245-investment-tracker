@@ -9,6 +9,7 @@ urlpatterns = [
 	path('transactions', TransactionsListView.as_view(), name='transactions-list'),
 	path('account/<int:pk>/', AccountDetailView.as_view(), name='account-detail'),
 	path('account/<int:pk>/update', AccountUpdate.as_view(), name='account-update'),
+	path('accounts', ListAccounts.as_view(), name='account-list'),
 	path('purchase', PurchaseInvestmentView.as_view(), name='purchase-investment'),
 	path('sell/<int:pk>', SellInvestmentView.as_view(), name='sell-investment'),
 	path('deposit/<int:pk>', DepositCashView.as_view(), name='deposit-cash'),

@@ -22,6 +22,15 @@ class AccountUpdate(UpdateView):
 	template_name = 'investmentservices/account_update.html'
 	success_url = reverse_lazy('shared-investments-list', )
 
+class ListAccounts(ListView):
+	'''Lists all accounts'''
+	#TODO: Filter by advisorID?
+	model = Account
+	template_name = 'investmentservices/list_accounts.html'
+
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		return context
 
 
 class SharedInvestmentsListView(ListView):
