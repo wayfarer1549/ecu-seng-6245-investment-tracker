@@ -12,4 +12,5 @@ urlpatterns = [
 	path('purchase', PurchaseInvestmentView.as_view(), name='purchase-investment'),
 	path('sell/<int:pk>', SellInvestmentView.as_view(), name='sell-investment'),
 	path('deposit/<int:pk>', DepositCashView.as_view(), name='deposit-cash'),
+	path('withdraw/<int:pk>', WithdrawCashView.as_view(), name='withdraw-cash'),
 ]

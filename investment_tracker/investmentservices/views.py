@@ -82,7 +82,13 @@ class MakeDepositView(UpdateView):
 
 class WithdrawCashView(UpdateView):
 	'''A view for withdrawing cash from an account'''
-	pass
+	model = Account
+	fields = ['cash_balance']
+	template_name = 'investmentservices/withdraw_cash.html'
+	success_url = reverse_lazy('account-detail', )
+
+	def get_success_url(self):
+		return reverse_lazy('account-detail', kwargs={'pk': self.kwargs['pk']})
 
 class StocksListView(ListView):
 	'''A view for listing all stocks in the current user's portfolio'''
