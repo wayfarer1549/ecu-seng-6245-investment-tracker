@@ -5,6 +5,13 @@ from .models import Account, SharedInvestment, Bond, Transaction
 
 # Create your views here.
 
+class CreateAccountView(CreateView):
+	'''A view for creating a new customer account'''
+	model = Account
+	template_name = 'investmentservices/create_account.html'
+	fields = ['account_number', 'advisor', 'cash_balance']
+	success_url = reverse_lazy('shared-investments-list', ) #TODO: change this
+
 class AccountDetailView(DetailView):
 	'''A view for displaying account details for a particular investor'''
 	model = Account
