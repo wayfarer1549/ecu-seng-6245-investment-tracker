@@ -70,10 +70,15 @@ class SellInvestmentView(UpdateView):
 	fields = ['ticker_symbol', 'number_of_shares', ]
 	template_name = 'investmentservices/sell_investment.html'
 	success_url = reverse_lazy('shared-investments-list', )
+	#TODO: Update Cash Balance & Exception Handling depending on Cash Balance
+
 
 class MakeDepositView(UpdateView):
 	'''A view for depositing cash to an account'''
-	pass
+	model = SharedInvestment
+	fields = [cash_balance]
+	template_name = 'investmentservices/make_deposit.html'
+	success_url = reverse_lazy('account-detail', )
 
 class WithdrawCashView(UpdateView):
 	'''A view for withdrawing cash from an account'''

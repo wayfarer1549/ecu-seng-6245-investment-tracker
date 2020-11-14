@@ -11,4 +11,5 @@ urlpatterns = [
 	path('account/<int:pk>/update', AccountUpdate.as_view(), name='account-update'),
 	path('purchase', PurchaseInvestmentView.as_view(), name='purchase-investment'),
 	path('sell/<int:pk>', SellInvestmentView.as_view(), name='sell-investment'),
+	path('deposit/<int:pk>', DepositCashView.as_view(), name='deposit-cash'),
 ]
