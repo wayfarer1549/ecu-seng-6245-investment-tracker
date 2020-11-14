@@ -10,6 +10,7 @@ class Account(models.Model):
 	advisor = models.CharField(max_length=200)
 	investment_balance = models.DecimalField(max_digits=22, decimal_places=2)
 	cash_balance = models.DecimalField(max_digits=22, decimal_places=2)
+	active = models.BooleanField(default=True)
 
 	def get_absolute_url(self):
 		return reverse('account-detail', kwargs={'pk': self.pk})

@@ -18,7 +18,7 @@ class AccountDetailView(DetailView):
 class AccountUpdate(UpdateView):
 	'''A view for updating an account'''
 	model = Account
-	fields = ['advisor']
+	fields = ['advisor', 'active']
 	template_name = 'investmentservices/account_update.html'
 	success_url = reverse_lazy('shared-investments-list', )
 
