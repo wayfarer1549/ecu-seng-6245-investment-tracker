@@ -112,11 +112,21 @@ class StocksListView(ListView):
 
 class ETFListView(ListView):
 	'''A view for listing all ETFs in the current user's portfolio'''
-	pass
+	template_name = 'investmentservices/ETF_list.html'
+	context_object_name = 'ETFs'
+
+	def get_queryset(self):
+		'''Return a list of shared investments of investment type 'stock' '''
+		return SharedInvestment.objects.filter(investment_type__exact='ETF')
 
 class MutualFundListView(ListView):
 	'''A view for listing all Mutual Funds in the current user's portfolio'''
-	pass
+	template_name = 'investmentservices/mutual_fund_list.html'
+	context_object_name = 'mutual_funds'
+
+	def get_queryset(self):
+		'''Return a list of shared investments of investment type 'stock' '''
+		return SharedInvestment.objects.filter(investment_type__exact='MUF')
 
 class InvestmentDetailView(DetailView):
 	'''A Detail view for a particular investment in the current user's portfolio'''

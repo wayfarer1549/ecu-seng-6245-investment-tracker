@@ -1,11 +1,13 @@
 from django.urls import path
 
-from .views import SharedInvestmentsListView, BondsListView, TransactionsListView, PurchaseInvestmentView, SellInvestmentView, AccountDetailView, AccountUpdate, ListAccounts, MakeDepositView, WithdrawCashView, StocksListView
+from .views import SharedInvestmentsListView, BondsListView, TransactionsListView, PurchaseInvestmentView, SellInvestmentView, AccountDetailView, AccountUpdate, ListAccounts, MakeDepositView, WithdrawCashView, StocksListView, ETFListView, MutualFundListView
 
 urlpatterns = [
 
 	path('shares', SharedInvestmentsListView.as_view(), name='shared-investments-list'),
 	path('stocks', StocksListView.as_view(), name='stocks-list'),
+	path('ETFs', ETFListView.as_view(), name='stocks-list'),
+	path('mfunds', MutualFundListView.as_view(), name='stocks-list'),
 	path('bonds', BondsListView.as_view(), name='bonds-list'),
 	path('transactions', TransactionsListView.as_view(), name='transactions-list'),
 	path('account/<int:pk>/', AccountDetailView.as_view(), name='account-detail'),

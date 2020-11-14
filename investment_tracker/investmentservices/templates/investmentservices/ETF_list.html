@@ -1,0 +1,11 @@
+<h1>Exchange Traded Funds</h1>
+
+<ul>
+
+{% for ETF in ETFs %}
+	<li>{{ETF.ticker_symbol}} </li>
+{% empty %}
+	<li>No ETFs to display.</li>
+{% endfor %}
+
+</ul>

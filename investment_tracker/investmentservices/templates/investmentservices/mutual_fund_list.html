@@ -1,0 +1,11 @@
+<h1>Mutual Funds</h1>
+
+<ul>
+
+{% for MUF in mutual_funds %}
+	<li>{{MUF.ticker_symbol}} </li>
+{% empty %}
+	<li>No mutual funds to display.</li>
+{% endfor %}
+
+</ul>
