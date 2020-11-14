@@ -24,3 +24,19 @@ class BaseUser(AbstractUser):
 	@property
 	def get_phone_number(self):
 		return self.primary_phone_number
+	
+class Investor(BaseUser):
+	'''Overview: Represents an individual investor'''
+
+	# Attributes
+	account = models.OneToOneField(
+		Account,
+		on_delete=models.CASCADE,
+		primary_key=True,
+		)
+
+class FinancialAdvisor(BaseUser):
+	'''Overview: Represents a Financial Advisor'''
+	hire_date = models.DateField("date of hire")
+
+

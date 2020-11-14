@@ -1,4 +1,5 @@
 from django.db import models
+from users.models import Investor, FinancialAdvisor
 
 # Create your models here.
 class Account(models.Model):
