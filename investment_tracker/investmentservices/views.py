@@ -84,10 +84,12 @@ class SellInvestmentView(UpdateView):
 
 class MakeDepositView(UpdateView):
 	'''A view for depositing cash to an account'''
-	model = SharedInvestment
-	fields = [cash_balance]
+	model = Account
+	fields = ['cash_balance']
 	template_name = 'investmentservices/make_deposit.html'
-	success_url = reverse_lazy('account-detail', )
+
+	def get_success_url(self):
+		return reverse_lazy('account-detail', kwargs={'pk': self.kwargs['pk']})
 
 class WithdrawCashView(UpdateView):
 	'''A view for withdrawing cash from an account'''
@@ -101,7 +103,12 @@ class WithdrawCashView(UpdateView):
 
 class StocksListView(ListView):
 	'''A view for listing all stocks in the current user's portfolio'''
-	pass
+	template_name = 'investmentservices/stocks_list.html'
+	context_object_name = 'stocks'
+
+	def get_queryset(self):
+		'''Return a list of shared investments of investment type 'stock' '''
+		return SharedInvestment.objects.filter(investment_type__exact='STK')
 
 class ETFListView(ListView):
 	'''A view for listing all ETFs in the current user's portfolio'''

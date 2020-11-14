@@ -1,0 +1,11 @@
+<h1>Stocks</h1>
+
+<ul>
+
+{% for stock in stocks %}
+	<li>{{stock.ticker_symbol}} </li>
+{% empty %}
+	<li>No stocks to display.</li>
+{% endfor %}
+
+</ul>
