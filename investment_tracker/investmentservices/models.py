@@ -180,6 +180,7 @@ class Transaction(models.Model):
 	TRANSACTION_TYPES = [
 		('BUY', 'Purchased'),
 		('SELL', 'Sold'),
+		
 	]
 
 	#account = models.ForeignKey(Account, on_delete=models.CASCADE, blank=False) #models.CharField(max_length=20)
@@ -201,6 +202,14 @@ class SharedTransaction(Transaction):
 	'''Represents a transaction involving a shared investment'''
 	investment = models.ForeignKey(SharedInvestment, on_delete=models.CASCADE)
 	share_count = models.IntegerField(blank=False)
+
+class CashTransaction(Transaction):
+	'''Represents a cash transaction'''
+	TRANSACTION_TYPES = [
+		('DEP', 'Deposit'),
+		('WTHDL', 'Withdrawal'),
+	]
+
 
 
 
