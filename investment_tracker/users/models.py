@@ -9,6 +9,8 @@ class FinancialUser(AbstractUser):
 	#Attributes
 	ssn = models.CharField(max_length=11, null=True, blank=False)
 	primary_phone_number = models.CharField(max_length=10, null=True, blank=True)
+	is_investor = models.BooleanField(default=False)
+	is_advisor = models.BooleanField(default=False)
 
 	@property
 	def get_full_name(self):

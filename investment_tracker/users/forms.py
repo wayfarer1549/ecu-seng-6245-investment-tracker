@@ -7,10 +7,10 @@ class FinancialUserCreationForm(UserCreationForm):
 
 	class Meta(UserCreationForm):
 		model = FinancialUser
-		fields = UserCreationForm.Meta.fields + ('ssn', 'primary_phone_number', )
+		fields = UserCreationForm.Meta.fields + ('ssn', 'primary_phone_number', 'is_investor', 'is_advisor')
 
 class FinancialUserChangeForm(UserChangeForm):
 
 	class Meta:
 		model = FinancialUser
-		fields = UserChangeForm.Meta.fields + ('ssn', 'primary_phone_number', )
+		fields = UserChangeForm.Meta.fields + ('ssn', 'primary_phone_number', 'is_investor', 'is_advisor')
