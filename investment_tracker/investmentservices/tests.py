@@ -1,6 +1,6 @@
 from decimal import Decimal
 from django.test import TestCase
-from .models import Account, SharedInvestment, Bond
+from .models import Account, SharedInvestment, Bond, SharedTransaction
 
 # Create your tests here.
 class AccountModelTest(TestCase):
@@ -48,6 +48,12 @@ class AccountModelTest(TestCase):
 class SharedInvestmentTest(TestCase):
 	
 	def setUp(self):
+
+		# test_acct = Account.objects.create(
+		# 	account_number='OWEN2020',
+		# 	investment_balance=0.00,
+		# 	cash_balance=1250.00,)
+
 		SharedInvestment.objects.create(
 			ticker_symbol='AAPL',
 			purchase_date = '2020-11-15',
@@ -99,14 +105,20 @@ class SharedInvestmentTest(TestCase):
 		self.assertEqual(mfund.investment_type, 'MUF')
 
 	def test_positive_update_share_count(self):
+		#test_acct = Account.objects.get(account_number__exact='OWEN2020')
+		
 		stock = SharedInvestment.objects.get(id=1)
 
 		# assert pre-purchase count at 0
 		self.assertEqual(stock.number_of_shares, 0)
 		# update the share count
-		stock.update_share_count(5)
+		stock.update_share_count(5, '119.50')
 		# assert post-purchase count at 5 shares
 		self.assertEqual(stock.number_of_shares, 5)
+
+		# check that a transaction was created
+		transaction = SharedTransaction.objects.get(id=1)
+		self.assertEqual(transaction.share_count, 5)
 
 	def test_negative_update_share_count(self):
 		stock = SharedInvestment.objects.get(id=1)
@@ -114,10 +126,18 @@ class SharedInvestmentTest(TestCase):
 		# assert pre-purchase count at 0
 		self.assertEqual(stock.number_of_shares, 0)
 		# update the share count
-		stock.update_share_count(5)
+		stock.update_share_count(5, '119.50')
 		# assert post-purchase count at 2 shares
-		stock.update_share_count(-3)
+		stock.update_share_count(-3, '119.50')
 		self.assertEqual(stock.number_of_shares, 2)
+
+		# check that transactions were created
+		transaction = SharedTransaction.objects.get(id=1)
+		self.assertEqual(transaction.share_count, 5)
+		self.assertEqual(transaction.transaction_type, 'BUY')
+		transaction = SharedTransaction.objects.get(id=2)
+		self.assertEqual(transaction.transaction_type, 'SELL')
+		self.assertEqual(transaction.share_count, 3)
 
 	def test_update_share_price(self):
 		stock = SharedInvestment.objects.get(id=1)
@@ -125,10 +145,9 @@ class SharedInvestmentTest(TestCase):
 		self.assertEqual(stock.current_price, Decimal('125.00'))
 
 
-
 	def test_investment_value(self):
 		stock = SharedInvestment.objects.get(id=1)
-		stock.update_share_count(25)
+		stock.update_share_count(25, '119.26')
 		current_price = Decimal('119.26')
 		self.assertEqual(stock.investment_value, 25*current_price)
 
