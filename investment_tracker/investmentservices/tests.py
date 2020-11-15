@@ -1,3 +1,4 @@
+from decimal import Decimal
 from django.test import TestCase
 from .models import Account, SharedInvestment, Bond
 
@@ -47,15 +48,55 @@ class AccountModelTest(TestCase):
 class SharedInvestmentTest(TestCase):
 	
 	def setUp(self):
-		pass
+		SharedInvestment.objects.create(
+			ticker_symbol='AAPL',
+			purchase_date = '2020-11-15',
+			name='Apple',
+			purchase_price=Decimal('119.26'),
+			current_price=Decimal('119.26'),
+			investment_type='STK',)
+
+		SharedInvestment.objects.create(
+			ticker_symbol='QQQ',
+			name='QQQ Nasdaq Index',
+			purchase_date = '2020-11-15',
+			purchase_price=290.93,
+			current_price=290.93,
+			investment_type='ETF',)
+
+		SharedInvestment.objects.create(
+			ticker_symbol='NPFCX',
+			name='American Funds New Perspective Funds',
+			purchase_date = '2020-11-15',
+			purchase_price=54.33,
+			current_price=54.33,
+			investment_type='MUF',)
 
 	def test_create_stock(self):
-		pass
+		stock = SharedInvestment.objects.get(id=1)
+
+		self.assertEqual(stock.ticker_symbol, 'AAPL')
+		self.assertEqual(stock.name, 'Apple')
+		self.assertEqual(stock.purchase_price, Decimal('119.26'))
+		self.assertEqual(stock.current_price, Decimal('119.26'))
+		self.assertEqual(stock.investment_type, 'STK')
 
 	def test_create_ETF(self):
-		pass
+		etf = SharedInvestment.objects.get(id=2)
+		self.assertEqual(etf.ticker_symbol, 'QQQ')
+		self.assertEqual(etf.name, 'QQQ Nasdaq Index')
+		self.assertEqual(etf.purchase_price, Decimal('290.93'))
+		self.assertEqual(etf.current_price, Decimal('290.93'))
+		self.assertEqual(etf.investment_type, 'ETF')
+
 
 	def test_create_mutual_fund(self):
+		mfund = SharedInvestment.objects.get(id=3)
+		self.assertEqual(mfund.ticker_symbol, 'NPFCX')
+		self.assertEqual(mfund.name, 'American Funds New Perspective Funds')
+		self.assertEqual(mfund.purchase_price, Decimal('54.33'))
+		self.assertEqual(mfund.current_price, Decimal('54.33'))
+		self.assertEqual(mfund.investment_type, 'MUF')
 		pass
 
 
