@@ -1,6 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from investmentservices.models import Account
+
 
 # Create your models here.
 class FinancialUser(AbstractUser):
