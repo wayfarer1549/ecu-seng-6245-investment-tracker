@@ -11,6 +11,7 @@ class AccountModelTest(TestCase):
 			cash_balance=1250.00,)
 
 	def test_create_account(self):
+		test_acct = Account.objects.get(id=1)
 		number = 'OWEN2020'
 		inv_balance = 0.00
 		cash_balance = 1250.00
@@ -21,16 +22,26 @@ class AccountModelTest(TestCase):
 		self.assertTrue(test_acct.active)
 
 	def test_account_balance(self):
-		pass
+		test_acct = Account.objects.get(account_number__exact='OWEN2020')
+		expected_balance = 1250.00
+
+		self.assertEqual(test_acct.get_account_balance, expected_balance)
 
 	def test_cash_balance(self):
-		pass
+		test_acct = Account.objects.get(account_number__exact='OWEN2020')
+		expected_balance = 1250.00
+
+		self.assertEqual(test_acct.get_cash_balance, expected_balance)
 
 	def test_investment_balance(self):
-		pass
+		test_acct = Account.objects.get(account_number__exact='OWEN2020')
+		expected_balance = 0.00
+
+		self.assertEqual(test_acct.get_investment_balance, expected_balance)
 
 	def test_acct_number(self):
-		pass
+		test_acct = Account.objects.get(id=1)
+		self.assertEqual(test_acct.get_acct_number, 'OWEN2020')
 
 
 class SharedInvestmentTest(TestCase):
