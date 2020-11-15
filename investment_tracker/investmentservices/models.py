@@ -37,6 +37,18 @@ class Account(models.Model):
 	def get_acct_number(self):
 		return self.account_number
 
+	def deposit(self, amount):
+
+		if amount > 0:
+			self.cash_balance += amount
+			self.save()
+		
+
+	def withdraw(self, amount):
+		if amount > 0:
+			self.cash_balance -= amount
+			self.save()
+
 class Investment(models.Model):
 	'''Overview Represents an investment in a customer's portfolio'''
 
