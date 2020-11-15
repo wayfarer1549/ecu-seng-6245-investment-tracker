@@ -41,6 +41,7 @@ class Investment(models.Model):
 	'''Overview Represents an investment in a customer's portfolio'''
 
 	# Attributes
+	account = models.CharField(max_length=20, blank=True, null=True)
 	purchase_date = models.DateField('date purchased')
 	name = models.CharField(max_length=200, blank=False, null=False)
 
@@ -115,11 +116,28 @@ class SharedInvestment(Investment):
 		choices=SHARED_INVESTMENT_CHOICES,
 		)
 
-	def update_share_count(self, share_count):
+	def update_share_count(self, share_count, purchase_price):
 		'''updates this model with a new share count'''
 		self.number_of_shares += share_count
-
 		self.save()
+
+
+
+		if share_count > 0:
+
+			new_transaction = SharedTransaction.objects.create(
+				investment=self,
+				share_count=share_count,
+				transaction_type='BUY',
+				transaction_date='2020-11-01', #TODO: Current Date
+				transaction_amount=Decimal(share_count)*Decimal(purchase_price) )
+		else:
+			new_transaction = SharedTransaction.objects.create(
+				investment=self,
+				share_count=abs(share_count),
+				transaction_type='SELL',
+				transaction_date='2020-11-01',
+				transaction_amount=abs(Decimal(share_count))*Decimal(purchase_price))
 
 	def update_current_price(self, new_price):
 		'''updates the current share price of the investment'''
@@ -152,7 +170,7 @@ class Transaction(models.Model):
 		('SELL', 'Sold'),
 	]
 
-	account = models.ForeignKey(Account, on_delete=models.CASCADE, blank=False) #models.CharField(max_length=20)
+	#account = models.ForeignKey(Account, on_delete=models.CASCADE, blank=False) #models.CharField(max_length=20)
 	transaction_date = models.DateField(blank=False)
 	transaction_amount = models.DecimalField(max_digits=22, decimal_places=2)
 	transaction_type = models.CharField(max_length=4, choices=TRANSACTION_TYPES)
