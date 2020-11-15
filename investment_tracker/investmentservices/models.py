@@ -128,6 +128,10 @@ class SharedInvestment(Investment):
 		self.current_price = new_price
 		self.save()
 
+	@property 
+	def investment_value(self):
+		return number_of_shares * current_price
+
 	def __str__(self):
 		return self.ticker_symbol
 
