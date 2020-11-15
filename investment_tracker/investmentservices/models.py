@@ -6,7 +6,7 @@ class Account(models.Model):
 	'''Overview: Represents a customer's account with the financial brokerage.'''
 
 	# Attributes
-	account_number = models.CharField(max_length=20)
+	account_number = models.CharField(max_length=20, blank=False, null=False)
 	account_owner = models.OneToOneField(FinancialUser, null=True, on_delete=models.CASCADE, related_name='account_owner_set')
 	#advisor = models.CharField(max_length=200)
 	advisor = models.ForeignKey(FinancialUser, null=True, on_delete=models.CASCADE, related_name='account_advisor_set')
@@ -41,7 +41,7 @@ class Investment(models.Model):
 
 	# Attributes
 	purchase_date = models.DateField('date purchased')
-	name = models.CharField(max_length=200)
+	name = models.CharField(max_length=200, blank=False, null=False)
 
 	class Meta:
 		abstract = True
@@ -61,11 +61,11 @@ class Bond(Investment):
 	]
 
 	# Attributes
-	bond_yield = models.FloatField() # the interest rate of the bond
+	bond_yield = models.FloatField(blank=False) # the interest rate of the bond
 	bond_type = models.CharField(max_length=5, choices=BOND_TYPE_CHOICES)
 	maturity_date = models.DateField('maturity date of the bond')
-	number_of_payments = models.IntegerField() # how many payments of interest this bond pays per year
-	purchase_price = models.DecimalField(max_digits=12, decimal_places=2) # price of the bond when purchased
+	number_of_payments = models.IntegerField(blank=False) # how many payments of interest this bond pays per year
+	purchase_price = models.DecimalField(max_digits=12, decimal_places=2, blank=False) # price of the bond when purchased
 
 	@property
 	def get_yield(self):
@@ -105,10 +105,10 @@ class SharedInvestment(Investment):
 	]
 
 	# Attributes
-	ticker_symbol = models.CharField(max_length=6) # investment's ticker symbol
-	number_of_shares = models.IntegerField() # possible to have fractional shares?
-	purchase_price = models.DecimalField(max_digits=12, decimal_places=2) # price per share when purchased
-	current_price = models.DecimalField(max_digits=12, decimal_places=2) # current price per share
+	ticker_symbol = models.CharField(max_length=6, blank=False, null=False) # investment's ticker symbol
+	number_of_shares = models.IntegerField(blank=False) # possible to have fractional shares?
+	purchase_price = models.DecimalField(max_digits=12, decimal_places=2, blank=False) # price per share when purchased
+	current_price = models.DecimalField(max_digits=12, decimal_places=2, blank=False) # current price per share
 	investment_type = models.CharField(
 		max_length=3,
 		choices=SHARED_INVESTMENT_CHOICES,
@@ -150,8 +150,8 @@ class Transaction(models.Model):
 		('SELL', 'Sold'),
 	]
 
-	account = models.ForeignKey(Account, on_delete=models.CASCADE) #models.CharField(max_length=20)
-	purchase_date = models.DateField('date purchased')
+	account = models.ForeignKey(Account, on_delete=models.CASCADE, blank=False) #models.CharField(max_length=20)
+	transaction_date = models.DateField(blank=False)
 	transaction_amount = models.DecimalField(max_digits=22, decimal_places=2)
 	transaction_type = models.CharField(max_length=4, choices=TRANSACTION_TYPES)
 
@@ -159,7 +159,7 @@ class Transaction(models.Model):
 		abstract = True
 
 	def __str__(self):
-		return self.purchase_date + account.get_acct_number()
+		return self.transaction_date + account.get_acct_number()
 
 class BondTransaction(Transaction):
 	'''Represents a transaction involving a bond investment'''
@@ -168,7 +168,7 @@ class BondTransaction(Transaction):
 class SharedTransaction(Transaction):
 	'''Represents a transaction involving a shared investment'''
 	investment = models.ForeignKey(SharedInvestment, on_delete=models.CASCADE)
-	share_count = models.IntegerField()
+	share_count = models.IntegerField(blank=False)
 
 
 
