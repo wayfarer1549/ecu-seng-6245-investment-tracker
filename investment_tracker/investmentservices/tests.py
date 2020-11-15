@@ -97,7 +97,40 @@ class SharedInvestmentTest(TestCase):
 		self.assertEqual(mfund.purchase_price, Decimal('54.33'))
 		self.assertEqual(mfund.current_price, Decimal('54.33'))
 		self.assertEqual(mfund.investment_type, 'MUF')
-		pass
+
+	def test_positive_update_share_count(self):
+		stock = SharedInvestment.objects.get(id=1)
+
+		# assert pre-purchase count at 0
+		self.assertEqual(stock.number_of_shares, 0)
+		# update the share count
+		stock.update_share_count(5)
+		# assert post-purchase count at 5 shares
+		self.assertEqual(stock.number_of_shares, 5)
+
+	def test_negative_update_share_count(self):
+		stock = SharedInvestment.objects.get(id=1)
+
+		# assert pre-purchase count at 0
+		self.assertEqual(stock.number_of_shares, 0)
+		# update the share count
+		stock.update_share_count(5)
+		# assert post-purchase count at 2 shares
+		stock.update_share_count(-3)
+		self.assertEqual(stock.number_of_shares, 2)
+
+	def test_update_share_price(self):
+		stock = SharedInvestment.objects.get(id=1)
+		stock.update_current_price('125.00')
+		self.assertEqual(stock.current_price, Decimal('125.00'))
+
+
+
+	def test_investment_value(self):
+		stock = SharedInvestment.objects.get(id=1)
+		stock.update_share_count(25)
+		current_price = Decimal('119.26')
+		self.assertEqual(stock.investment_value, 25*current_price)
 
 
 

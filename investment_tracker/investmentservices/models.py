@@ -1,3 +1,4 @@
+from decimal import Decimal
 from django.db import models
 from users.models import FinancialUser
 
@@ -106,7 +107,7 @@ class SharedInvestment(Investment):
 
 	# Attributes
 	ticker_symbol = models.CharField(max_length=6, blank=False, null=False) # investment's ticker symbol
-	number_of_shares = models.IntegerField(blank=False) # possible to have fractional shares?
+	number_of_shares = models.IntegerField(blank=False, default=0) # possible to have fractional shares?
 	purchase_price = models.DecimalField(max_digits=12, decimal_places=2, blank=False) # price per share when purchased
 	current_price = models.DecimalField(max_digits=12, decimal_places=2, blank=False) # current price per share
 	investment_type = models.CharField(
@@ -114,23 +115,20 @@ class SharedInvestment(Investment):
 		choices=SHARED_INVESTMENT_CHOICES,
 		)
 
-	def update_share_count(this, share_count):
+	def update_share_count(self, share_count):
 		'''updates this model with a new share count'''
-		if sharecount > 0:
-			self.number_of_shares += sharecount
-		else:
-			self.number_of_shares -= sharecount
+		self.number_of_shares += share_count
 
 		self.save()
 
-	def update_current_price(this, new_price):
+	def update_current_price(self, new_price):
 		'''updates the current share price of the investment'''
-		self.current_price = new_price
+		self.current_price = Decimal(new_price)
 		self.save()
 
 	@property 
 	def investment_value(self):
-		return number_of_shares * current_price
+		return self.number_of_shares * self.current_price
 
 	def __str__(self):
 		return self.ticker_symbol
