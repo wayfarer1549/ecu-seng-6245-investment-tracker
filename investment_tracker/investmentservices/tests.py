@@ -45,10 +45,43 @@ class AccountModelTest(TestCase):
 
 
 class SharedInvestmentTest(TestCase):
-	pass
+	
+	def setUp(self):
+		pass
+
+	def test_create_stock(self):
+		pass
+
+	def test_create_ETF(self):
+		pass
+
+	def test_create_mutual_fund(self):
+		pass
+
+
 
 class BondTest(TestCase):
-	pass
+	
+	def setUp(self):
+		pass
+
+	def test_create_treasury_bill(self):
+		pass
+
+	def test_create_treasury_note(self):
+		pass
+
+	def test_create_treasury_bond(self):
+		pass
+
+	def test_create_corporate_bond(self):
+		pass
+
+	def test_create_municipal_bond(self):
+		pass
+
+	def test_create_international_bond(self):
+		pass
 
 class TransactionTests(TestCase):
 	pass
