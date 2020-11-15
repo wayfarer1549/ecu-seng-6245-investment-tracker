@@ -7,8 +7,9 @@ class Account(models.Model):
 
 	# Attributes
 	account_number = models.CharField(max_length=20)
-	account_owner = models.OneToOneField(FinancialUser, on_delete=models.CASCADE)
-	advisor = models.CharField(max_length=200)
+	account_owner = models.OneToOneField(FinancialUser, null=True, on_delete=models.CASCADE, related_name='account_owner_set')
+	#advisor = models.CharField(max_length=200)
+	advisor = models.ForeignKey(FinancialUser, null=True, on_delete=models.CASCADE, related_name='account_advisor_set')
 	investment_balance = models.DecimalField(max_digits=22, decimal_places=2)
 	cash_balance = models.DecimalField(max_digits=22, decimal_places=2)
 	active = models.BooleanField(default=True)
