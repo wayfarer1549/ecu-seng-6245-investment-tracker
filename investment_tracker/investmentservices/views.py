@@ -78,7 +78,19 @@ class PurchaseInvestmentView(CreateView):
 	model = SharedInvestment
 	#TODO: Update Cash Balance & Exception Handling depending on Cash Balance
 
-
+class PurchaseAdditionalShares(UpdateView):
+	'''A view for purchasing more shares of an existing investment'''
+	model = SharedInvestment
+	fields = ['ticker_symbol', 'number_of_shares', ]
+	template_name = 'investmentservices/purchase_add_shares.html'
+	success_url = reverse_lazy('shared-investments-list',)
+	def get_object(self):
+		obj = super().get_object()
+		#print(obj.number_of_shares)
+		# update cash balance
+		obj.save()
+		#print(obj.number_of_shares)
+		return obj
 
 class SellInvestmentView(UpdateView):
 	'''A view for selling an investment'''

@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import SharedInvestmentsListView, BondsListView, TransactionsListView, PurchaseInvestmentView, SellInvestmentView, AccountDetailView, AccountUpdate, CreateAccountView, ListAccounts, MakeDepositView, WithdrawCashView, StocksListView, ETFListView, MutualFundListView
+from .views import SharedInvestmentsListView, BondsListView, TransactionsListView, PurchaseInvestmentView, PurchaseAdditionalShares, SellInvestmentView, AccountDetailView, AccountUpdate, CreateAccountView, ListAccounts, MakeDepositView, WithdrawCashView, StocksListView, ETFListView, MutualFundListView
 
 urlpatterns = [
 
@@ -15,6 +15,7 @@ urlpatterns = [
 	path('account/<int:pk>/update', AccountUpdate.as_view(), name='account-update'),
 	path('accounts', ListAccounts.as_view(), name='account-list'),
 	path('purchase', PurchaseInvestmentView.as_view(), name='purchase-investment'),
+	path('purchase/<int:pk>', PurchaseAdditionalShares.as_view(), name='additional-shares'),
 	path('sell/<int:pk>', SellInvestmentView.as_view(), name='sell-investment'),
 	path('deposit/<int:pk>', MakeDepositView.as_view(), name='deposit-cash'),
 	path('withdraw/<int:pk>', WithdrawCashView.as_view(), name='withdraw-cash'),
