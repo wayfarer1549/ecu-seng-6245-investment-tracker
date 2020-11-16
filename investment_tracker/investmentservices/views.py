@@ -54,7 +54,7 @@ class SharedInvestmentsListView(LoginRequiredMixin, ListView):
 		context = super().get_context_data(**kwargs)
 		return context
 
-class BondsListView(LoginRequiredMixin, ListView):
+class BondsListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
 	'''A list of all bonds in the user's portfolio'''
 
 	model = Bond
@@ -63,6 +63,9 @@ class BondsListView(LoginRequiredMixin, ListView):
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 		return context
+
+	def test_func(self):
+		return self.request.user.is_investor
 
 class TransactionsListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
 	'''A list of all transactions in the user's purchase history'''
@@ -141,8 +144,8 @@ class WithdrawCashView(LoginRequiredMixin, UpdateView):
 
 	def form_valid(self, form):
 		return super().form_valid(form)
-		
-class StocksListView(LoginRequiredMixin, ListView):
+
+class StocksListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
 	'''A view for listing all stocks in the current user's portfolio'''
 	template_name = 'investmentservices/stocks_list.html'
 	context_object_name = 'stocks'
@@ -151,7 +154,10 @@ class StocksListView(LoginRequiredMixin, ListView):
 		'''Return a list of shared investments of investment type 'stock' '''
 		return SharedInvestment.objects.filter(investment_type__exact='STK')
 
-class ETFListView(LoginRequiredMixin, ListView):
+	def test_func(self):
+		return self.request.user.is_investor
+
+class ETFListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
 	'''A view for listing all ETFs in the current user's portfolio'''
 	template_name = 'investmentservices/ETF_list.html'
 	context_object_name = 'ETFs'
@@ -160,7 +166,10 @@ class ETFListView(LoginRequiredMixin, ListView):
 		'''Return a list of shared investments of investment type 'stock' '''
 		return SharedInvestment.objects.filter(investment_type__exact='ETF')
 
-class MutualFundListView(LoginRequiredMixin, ListView):
+	def test_func(self):
+		return self.request.user.is_investor
+
+class MutualFundListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
 	'''A view for listing all Mutual Funds in the current user's portfolio'''
 	template_name = 'investmentservices/mutual_fund_list.html'
 	context_object_name = 'mutual_funds'
@@ -168,6 +177,9 @@ class MutualFundListView(LoginRequiredMixin, ListView):
 	def get_queryset(self):
 		'''Return a list of shared investments of investment type 'stock' '''
 		return SharedInvestment.objects.filter(investment_type__exact='MUF')
+
+	def test_func(self):
+		return self.request.user.is_investor
 
 class InvestmentDetailView(LoginRequiredMixin, DetailView):
 	'''A Detail view for a particular investment in the current user's portfolio'''
