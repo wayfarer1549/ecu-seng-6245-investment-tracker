@@ -1,6 +1,6 @@
 from decimal import Decimal
 from django.test import TestCase
-from .models import Account, SharedInvestment, Bond, SharedTransaction
+from .models import Account, SharedInvestment, Bond, SharedTransaction, CashTransaction
 
 # Create your tests here.
 class AccountModelTest(TestCase):
@@ -44,6 +44,23 @@ class AccountModelTest(TestCase):
 		test_acct = Account.objects.get(id=1)
 		self.assertEqual(test_acct.get_acct_number, 'OWEN2020')
 
+	def test_desposit(self):
+		test_acct = Account.objects.get(id=1)
+		test_acct.deposit(Decimal('250.00'))
+		self.assertEqual(test_acct.cash_balance, Decimal('1500.00'))
+		# check that transaction was created
+		transaction = CashTransaction.objects.get(id=1)
+		self.assertEqual(transaction.transaction_type, 'DEP')
+		self.assertEqual(transaction.transaction_amount, Decimal('250.00'))
+
+	def test_withdraw(self):
+		test_acct = Account.objects.get(id=1)
+		test_acct.withdraw(Decimal('350.00'))
+		self.assertEqual(test_acct.cash_balance, Decimal('900.00'))
+		# check that transaction was created
+		transaction = CashTransaction.objects.get(id=1)
+		self.assertEqual(transaction.transaction_type, 'WDL')
+		self.assertEqual(transaction.transaction_amount, Decimal('350.00'))
 
 class SharedInvestmentTest(TestCase):
 	

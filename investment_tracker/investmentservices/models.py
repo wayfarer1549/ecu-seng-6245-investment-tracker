@@ -40,14 +40,24 @@ class Account(models.Model):
 	def deposit(self, amount):
 
 		if amount > 0:
-			self.cash_balance += amount
+			self.cash_balance += Decimal(amount)
 			self.save()
+
+			new_transaction = CashTransaction.objects.create(
+				transaction_type='DEP',
+				transaction_date='2020-11-01', #TODO: Current Date
+				transaction_amount=Decimal(amount) )
 		
 
 	def withdraw(self, amount):
 		if amount > 0:
 			self.cash_balance -= amount
 			self.save()
+
+			new_transaction = CashTransaction.objects.create(
+				transaction_type='WDL',
+				transaction_date='2020-11-01', #TODO: Current Date
+				transaction_amount=Decimal(amount) )
 
 class Investment(models.Model):
 	'''Overview Represents an investment in a customer's portfolio'''
@@ -207,7 +217,7 @@ class CashTransaction(Transaction):
 	'''Represents a cash transaction'''
 	TRANSACTION_TYPES = [
 		('DEP', 'Deposit'),
-		('WTHDL', 'Withdrawal'),
+		('WDL', 'Withdrawal'),
 	]
 
 
