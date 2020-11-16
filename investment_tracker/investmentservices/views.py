@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
@@ -5,14 +6,14 @@ from .models import Account, SharedInvestment, Bond, Transaction
 
 # Create your views here.
 
-class CreateAccountView(CreateView):
+class CreateAccountView(LoginRequiredMixin, CreateView):
 	'''A view for creating a new customer account'''
 	model = Account
 	template_name = 'investmentservices/create_account.html'
 	fields = ['account_number', 'advisor', 'cash_balance']
 	success_url = reverse_lazy('shared-investments-list', ) #TODO: change this
 
-class AccountDetailView(DetailView):
+class AccountDetailView(LoginRequiredMixin, DetailView):
 	'''A view for displaying account details for a particular investor'''
 	model = Account
 	template_name = 'investmentservices/account_details.html'
@@ -22,14 +23,14 @@ class AccountDetailView(DetailView):
 		context = super().get_context_data(**kwargs)
 		return context
 
-class AccountUpdate(UpdateView):
+class AccountUpdate(LoginRequiredMixin, UpdateView):
 	'''A view for updating an account'''
 	model = Account
 	fields = ['advisor', 'active']
 	template_name = 'investmentservices/account_update.html'
 	success_url = reverse_lazy('shared-investments-list', )
 
-class ListAccounts(ListView):
+class ListAccounts(LoginRequiredMixin, ListView):
 	'''Lists all accounts'''
 	#TODO: Filter by advisorID?
 	model = Account
@@ -40,7 +41,7 @@ class ListAccounts(ListView):
 		return context
 
 
-class SharedInvestmentsListView(ListView):
+class SharedInvestmentsListView(LoginRequiredMixin, ListView):
 	'''A list of all shared investments in the user's portfolio'''
 
 	model = SharedInvestment
@@ -50,7 +51,7 @@ class SharedInvestmentsListView(ListView):
 		context = super().get_context_data(**kwargs)
 		return context
 
-class BondsListView(ListView):
+class BondsListView(LoginRequiredMixin, ListView):
 	'''A list of all bonds in the user's portfolio'''
 
 	model = Bond
@@ -60,7 +61,7 @@ class BondsListView(ListView):
 		context = super().get_context_data(**kwargs)
 		return context
 
-class TransactionsListView(ListView):
+class TransactionsListView(LoginRequiredMixin, ListView):
 	'''A list of all transactions in the user's purchase history'''
 
 	model = Transaction
@@ -70,34 +71,36 @@ class TransactionsListView(ListView):
 		context = super().get_context_data(**kwargs)
 		return context
 
-class PurchaseInvestmentView(CreateView):
+class PurchaseInvestmentView(LoginRequiredMixin, CreateView):
 	'''A view for purchasing an investment'''
 	fields = ['ticker_symbol', 'name', 'number_of_shares', 'purchase_price', 'investment_type', 'current_price', 'purchase_date']
 	template_name = 'investmentservices/purchase_investment.html'
 	success_url = reverse_lazy('shared-investments-list', )
 	model = SharedInvestment
+	login_url = 'login'
+
 	#TODO: Update Cash Balance & Exception Handling depending on Cash Balance
 	def form_valid(self, form):
 		acct = Account.objects.get(account_owner__exact=self.request.user)
 		form.instance.account = acct
 		return super().form_valid(form)
-		#form.instance.account
+		
 
-class PurchaseAdditionalShares(UpdateView):
+class PurchaseAdditionalShares(LoginRequiredMixin, UpdateView):
 	'''A view for purchasing more shares of an existing investment'''
 	model = SharedInvestment
 	fields = ['ticker_symbol', 'number_of_shares', ]
 	template_name = 'investmentservices/purchase_add_shares.html'
 	success_url = reverse_lazy('shared-investments-list',)
-	def get_object(self):
-		obj = super().get_object()
-		#print(obj.number_of_shares)
-		# update cash balance
-		obj.save()
-		#print(obj.number_of_shares)
-		return obj
+	# def get_object(self):
+	# 	obj = super().get_object()
+	# 	#print(obj.number_of_shares)
+	# 	# update cash balance
+	# 	obj.save()
+	# 	#print(obj.number_of_shares)
+	# 	return obj
 
-class SellInvestmentView(UpdateView):
+class SellInvestmentView(LoginRequiredMixin, UpdateView):
 	'''A view for selling an investment'''
 	model = SharedInvestment
 	fields = ['ticker_symbol', 'number_of_shares', ]
@@ -106,7 +109,7 @@ class SellInvestmentView(UpdateView):
 	#TODO: Update Cash Balance & Exception Handling depending on Cash Balance
 
 
-class MakeDepositView(UpdateView):
+class MakeDepositView(LoginRequiredMixin, UpdateView):
 	'''A view for depositing cash to an account'''
 	model = Account
 	fields = ['cash_balance']
@@ -115,7 +118,7 @@ class MakeDepositView(UpdateView):
 	def get_success_url(self):
 		return reverse_lazy('account-detail', kwargs={'pk': self.kwargs['pk']})
 
-class WithdrawCashView(UpdateView):
+class WithdrawCashView(LoginRequiredMixin, UpdateView):
 	'''A view for withdrawing cash from an account'''
 	model = Account
 	fields = ['cash_balance']
@@ -125,7 +128,7 @@ class WithdrawCashView(UpdateView):
 	def get_success_url(self):
 		return reverse_lazy('account-detail', kwargs={'pk': self.kwargs['pk']})
 
-class StocksListView(ListView):
+class StocksListView(LoginRequiredMixin, ListView):
 	'''A view for listing all stocks in the current user's portfolio'''
 	template_name = 'investmentservices/stocks_list.html'
 	context_object_name = 'stocks'
@@ -134,7 +137,7 @@ class StocksListView(ListView):
 		'''Return a list of shared investments of investment type 'stock' '''
 		return SharedInvestment.objects.filter(investment_type__exact='STK')
 
-class ETFListView(ListView):
+class ETFListView(LoginRequiredMixin, ListView):
 	'''A view for listing all ETFs in the current user's portfolio'''
 	template_name = 'investmentservices/ETF_list.html'
 	context_object_name = 'ETFs'
@@ -143,7 +146,7 @@ class ETFListView(ListView):
 		'''Return a list of shared investments of investment type 'stock' '''
 		return SharedInvestment.objects.filter(investment_type__exact='ETF')
 
-class MutualFundListView(ListView):
+class MutualFundListView(LoginRequiredMixin, ListView):
 	'''A view for listing all Mutual Funds in the current user's portfolio'''
 	template_name = 'investmentservices/mutual_fund_list.html'
 	context_object_name = 'mutual_funds'
@@ -152,6 +155,6 @@ class MutualFundListView(ListView):
 		'''Return a list of shared investments of investment type 'stock' '''
 		return SharedInvestment.objects.filter(investment_type__exact='MUF')
 
-class InvestmentDetailView(DetailView):
+class InvestmentDetailView(LoginRequiredMixin, DetailView):
 	'''A Detail view for a particular investment in the current user's portfolio'''
 	pass
