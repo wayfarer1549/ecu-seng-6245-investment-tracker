@@ -63,7 +63,8 @@ class Investment(models.Model):
 	'''Overview Represents an investment in a customer's portfolio'''
 
 	# Attributes
-	account = models.CharField(max_length=20, blank=True, null=True)
+	#account = models.CharField(max_length=20, blank=True, null=True)
+	account = models.OneToOneField(Account, on_delete=models.CASCADE, blank=True, null=True)
 	purchase_date = models.DateField('date purchased')
 	name = models.CharField(max_length=200, blank=False, null=False)
 
@@ -142,8 +143,6 @@ class SharedInvestment(Investment):
 		'''updates this model with a new share count'''
 		self.number_of_shares += share_count
 		self.save()
-
-
 
 		if share_count > 0:
 
