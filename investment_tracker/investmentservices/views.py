@@ -77,6 +77,11 @@ class PurchaseInvestmentView(CreateView):
 	success_url = reverse_lazy('shared-investments-list', )
 	model = SharedInvestment
 	#TODO: Update Cash Balance & Exception Handling depending on Cash Balance
+	def form_valid(self, form):
+		acct = Account.objects.get(account_owner__exact=self.request.user)
+		form.instance.account = acct
+		return super().form_valid(form)
+		#form.instance.account
 
 class PurchaseAdditionalShares(UpdateView):
 	'''A view for purchasing more shares of an existing investment'''
