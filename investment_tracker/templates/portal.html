@@ -1,4 +1,9 @@
+{% if user.is_authenticated %}
+  Hi {{ user.username }}!
+<p><a href="{% url 'logout' %}">Log Out</a></p>
+{% endif %}
+
 <h1>Welcome to Investment Tracker Appliaction</h1>
 <h2>ECU SENG 6245 Fall 2020 Semester Project</h2>
 <h3>James Patrick Philips</h3>
-<h3>Login</h3>
+<h3><a href="{% url 'login' %}">Log In</a></h3>
