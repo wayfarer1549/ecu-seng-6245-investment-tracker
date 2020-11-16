@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
@@ -30,7 +30,7 @@ class AccountUpdate(LoginRequiredMixin, UpdateView):
 	template_name = 'investmentservices/account_update.html'
 	success_url = reverse_lazy('shared-investments-list', )
 
-class ListAccounts(LoginRequiredMixin, ListView):
+class ListAccounts(LoginRequiredMixin, UserPassesTestMixin, ListView):
 	'''Lists all accounts'''
 	#TODO: Filter by advisorID?
 	model = Account
@@ -39,6 +39,9 @@ class ListAccounts(LoginRequiredMixin, ListView):
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 		return context
+
+	def test_func(self):
+		return self.request.user.is_advisor
 
 
 class SharedInvestmentsListView(LoginRequiredMixin, ListView):
@@ -61,7 +64,7 @@ class BondsListView(LoginRequiredMixin, ListView):
 		context = super().get_context_data(**kwargs)
 		return context
 
-class TransactionsListView(LoginRequiredMixin, ListView):
+class TransactionsListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
 	'''A list of all transactions in the user's purchase history'''
 
 	model = Transaction
@@ -70,6 +73,9 @@ class TransactionsListView(LoginRequiredMixin, ListView):
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 		return context
+
+	def test_func(self):
+		return self.request.user.is_advisor
 
 class PurchaseInvestmentView(LoginRequiredMixin, CreateView):
 	'''A view for purchasing an investment'''
@@ -99,6 +105,8 @@ class PurchaseAdditionalShares(LoginRequiredMixin, UpdateView):
 	# 	obj.save()
 	# 	#print(obj.number_of_shares)
 	# 	return obj
+	def form_valid(self, form):
+		return super().form_valid(form)
 
 class SellInvestmentView(LoginRequiredMixin, UpdateView):
 	'''A view for selling an investment'''
@@ -107,7 +115,8 @@ class SellInvestmentView(LoginRequiredMixin, UpdateView):
 	template_name = 'investmentservices/sell_investment.html'
 	success_url = reverse_lazy('shared-investments-list', )
 	#TODO: Update Cash Balance & Exception Handling depending on Cash Balance
-
+	def form_valid(self, form):
+		return super().form_valid(form)
 
 class MakeDepositView(LoginRequiredMixin, UpdateView):
 	'''A view for depositing cash to an account'''
@@ -117,6 +126,8 @@ class MakeDepositView(LoginRequiredMixin, UpdateView):
 
 	def get_success_url(self):
 		return reverse_lazy('account-detail', kwargs={'pk': self.kwargs['pk']})
+	def form_valid(self, form):
+		return super().form_valid(form)
 
 class WithdrawCashView(LoginRequiredMixin, UpdateView):
 	'''A view for withdrawing cash from an account'''
@@ -128,6 +139,9 @@ class WithdrawCashView(LoginRequiredMixin, UpdateView):
 	def get_success_url(self):
 		return reverse_lazy('account-detail', kwargs={'pk': self.kwargs['pk']})
 
+	def form_valid(self, form):
+		return super().form_valid(form)
+		
 class StocksListView(LoginRequiredMixin, ListView):
 	'''A view for listing all stocks in the current user's portfolio'''
 	template_name = 'investmentservices/stocks_list.html'
