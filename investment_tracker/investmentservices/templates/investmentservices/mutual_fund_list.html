@@ -1,10 +1,3 @@
-{% if user.is_authenticated %}
-  Hi {{ user.username }}!
-<p><a href="{% url 'logout' %}">Log Out</a></p>
-{% endif %}
-
-
-
 <!doctype html>
 <html lang="en">
   <head>
@@ -52,9 +45,25 @@
 		<ul>
 
 		{% for MUF in mutual_funds %}
-			<li>{{MUF.ticker_symbol}} </li>
+			<div class="card">
+      		<div class="card-header">
+        	<span class="font-weight-bold">Name: {{ MUF.name }}</span>
+        	</span>
+      		</div>
+      		<div class="card-body">
+        		<p>Ticker symbol: {{ MUF.ticker_symbol }}<p>
+        		<p>Current share price: {{ MUF.current_price }}<p>
+        		<p>Share count: {{ MUF.number_of_shares }}<p>
+        		<p>Investment value: {{ MUF.investment_value }}<p>
+      		</div>
+      		<div class="card-footer text-center text-muted">
+		        <a href="{% url 'additional-shares' MUF.pk %}">Purchase More Shares</a> |
+		        <a href="{% url 'sell-investment' MUF.pk %}">Sell</a>
+      		</div>
+    		</div>
+    		<br />
 		{% empty %}
-			<li>No mutual funds to display.</li>
+			<li>No Mutual Funds to display.</li>
 		{% endfor %}
 
 		</ul>
