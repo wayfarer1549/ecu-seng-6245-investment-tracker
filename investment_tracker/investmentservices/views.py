@@ -46,13 +46,15 @@ class ListAccounts(LoginRequiredMixin, UserPassesTestMixin, ListView):
 
 class SharedInvestmentsListView(LoginRequiredMixin, ListView):
 	'''A list of all shared investments in the user's portfolio'''
-
-	model = SharedInvestment
 	template_name = 'investmentservices/shared_investments_list.html'
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 		return context
+
+	def get_queryset(self):
+		acct = Account.objects.get(account_owner=self.request.user)
+		return SharedInvestment.objects.filter(account=acct)
 
 class BondsListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
 	'''A list of all bonds in the user's portfolio'''
@@ -66,6 +68,10 @@ class BondsListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
 
 	def test_func(self):
 		return self.request.user.is_investor
+
+	def get_queryset(self):
+		acct = Account.objects.get(account_owner=self.request.user)
+		return SharedInvestment.objects.filter(account=acct)
 
 class TransactionsListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
 	'''A list of all transactions in the user's purchase history'''
@@ -200,7 +206,8 @@ class StocksListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
 
 	def get_queryset(self):
 		'''Return a list of shared investments of investment type 'stock' '''
-		return SharedInvestment.objects.filter(investment_type__exact='STK')
+		acct = Account.objects.get(account_owner=self.request.user)
+		return SharedInvestment.objects.filter(investment_type__exact='STK').filter(account=acct)
 
 	def test_func(self):
 		return self.request.user.is_investor
@@ -211,8 +218,9 @@ class ETFListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
 	context_object_name = 'ETFs'
 
 	def get_queryset(self):
-		'''Return a list of shared investments of investment type 'stock' '''
-		return SharedInvestment.objects.filter(investment_type__exact='ETF')
+		'''Return a list of shared investments of investment type 'ETF' '''
+		acct = Account.objects.get(account_owner=self.request.user)
+		return SharedInvestment.objects.filter(investment_type__exact='ETF').filter(account=acct)
 
 	def test_func(self):
 		return self.request.user.is_investor
@@ -223,8 +231,9 @@ class MutualFundListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
 	context_object_name = 'mutual_funds'
 
 	def get_queryset(self):
-		'''Return a list of shared investments of investment type 'stock' '''
-		return SharedInvestment.objects.filter(investment_type__exact='MUF')
+		'''Return a list of shared investments of investment type 'mutual fund' '''
+		acct = Account.objects.get(account_owner=self.request.user)
+		return SharedInvestment.objects.filter(investment_type__exact='MUF').filter(account=acct)
 
 	def test_func(self):
 		return self.request.user.is_investor
