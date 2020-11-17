@@ -157,14 +157,14 @@ class SellInvestmentView(LoginRequiredMixin, UpdateView):
 class MakeDepositView(LoginRequiredMixin, UpdateView):
 	'''A view for depositing cash to an account'''
 	model = Account
-	fields = ['cash_balance', ]
+	fields = ['cash_balance', 'account_owner' ]
 	template_name = 'investmentservices/make_deposit.html'
 
 	def get_success_url(self):
 		return reverse_lazy('account-detail', kwargs={'pk': self.kwargs['pk']})
 
 	def form_valid(self, form):
-		acct = Account.objects.get(account_owner__exact=self.request.user)
+		acct = Account.objects.get(id=self.kwargs['pk'])
 		new_cash_balance = form.instance.cash_balance
 		orig_cash_balance = acct.get_cash_balance
 
@@ -172,10 +172,10 @@ class MakeDepositView(LoginRequiredMixin, UpdateView):
 		acct.deposit(trans_amt)
 		return super().form_valid(form)
 
-class WithdrawCashView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+class WithdrawCashView(LoginRequiredMixin, UpdateView):
 	'''A view for withdrawing cash from an account'''
 	model = Account
-	fields = ['cash_balance',]
+	fields = ['cash_balance', 'account_owner']
 	template_name = 'investmentservices/withdraw_cash.html'
 	success_url = reverse_lazy('account-detail', )
 
@@ -183,7 +183,7 @@ class WithdrawCashView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 		return reverse_lazy('account-detail', kwargs={'pk': self.kwargs['pk']})
 
 	def form_valid(self, form):
-		acct = Account.objects.get(account_owner__exact=self.request.user)
+		acct = Account.objects.get(acct = Account.objects.get(id=self.kwargs['pk']))
 		
 		new_cash_balance = form.instance.cash_balance
 		orig_cash_balance = acct.get_cash_balance
@@ -196,8 +196,8 @@ class WithdrawCashView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 		return super().form_valid(form)
 
-	def test_func(self):
-		return self.request.user.is_investor
+	# def test_func(self):
+	# 	return self.request.user.is_investor
 
 class StocksListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
 	'''A view for listing all stocks in the current user's portfolio'''
