@@ -6,12 +6,15 @@ from .models import Account, SharedInvestment, Bond, Transaction
 
 # Create your views here.
 
-class CreateAccountView(LoginRequiredMixin, CreateView):
+class CreateAccountView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
 	'''A view for creating a new customer account'''
 	model = Account
 	template_name = 'investmentservices/create_account.html'
-	fields = ['account_number', 'advisor', 'cash_balance']
+	fields = ['account_number', 'account_owner', 'advisor', 'cash_balance']
 	success_url = reverse_lazy('shared-investments-list', ) #TODO: change this
+
+	def test_func(self):
+		return self.request.user.is_advisor
 
 class AccountDetailView(LoginRequiredMixin, DetailView):
 	'''A view for displaying account details for a particular investor'''
@@ -105,7 +108,12 @@ class PurchaseInvestmentView(LoginRequiredMixin, CreateView):
 	#TODO: Update Cash Balance & Exception Handling depending on Cash Balance
 	def form_valid(self, form):
 		acct = Account.objects.get(account_owner__exact=self.request.user)
-		form.instance.account = acct
+		share_qty = form.instance.number_of_shares
+		price = form.instance.purchase_price
+		trans_amt = price * share_qty
+		print(trans_amt)
+		acct.cash_balance -= trans_amt
+		acct.investment_balance += trans_amt
 		# share_price = form.instance.purchase_price
 		# share_count = form.instance.number_of_shares
 		# get the purchase amt
