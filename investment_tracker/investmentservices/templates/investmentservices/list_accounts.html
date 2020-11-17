@@ -1,6 +1,5 @@
 {% if user.is_authenticated %}
   Hi {{ user.username }}!
-<p><a href="{% url 'logout' %}">Log Out</a></p>
 {% endif %}
 
 <!doctype html>
@@ -17,42 +16,71 @@
   </head>
   <body>
 
+  	<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <title>Investment Tracker</title>
+  </head>
+  <body>
+
   	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="{% url 'portal' %}">Investment Tracker</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      {% if user.is_authenticated %}
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              {{ user.username }}
-            </a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="{% url 'logout' %}">
-              Log Out</a>
-            </div>
-          </li>
-        </ul>
+  		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'portal' %}">Investment Tracker <span class="sr-only">(current)</span></a>
+      {% if user.is_authenticated and user.is_advisor %}
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Advisor
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="{% url 'new_account' %}">Create Account</a>
+          <a class="dropdown-item" href="{% url 'account-list' %}">Investors</a>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+      </li>
+      
       {% else %}
-        <form class="form-inline ml-auto">
+      <form class="form-inline ml-auto">
           <a href="{% url 'login' %}" class="btn btn-outline-secondary">
           Log In</a>
         </form>
       {% endif %}
-    </div>
+  </ul>
   </nav>
 	<main>
     <div class="container">
     	<h1>Accounts</h1>
 
-		<ul>
+			<ul>
 
 		{% for account in object_list %}
-			<li>{{account.get_acct_number}} {{account.get_account_balance}}</li>
+			<div class="card">
+      		<div class="card-header">
+        	<span class="font-weight-bold">Number: {{ account.account_number }}</span>
+        	</span>
+      		</div>
+      		<div class="card-body">
+        		<p>Account balance : {{ account.get_account_balance }}<p>
+        		<p>Cash balance: {{ account.get_cash_balance }}<p>
+        		<p>Investment balance: {{ account.get_investment_balance }}<p>
+      		</div>
+      		<div class="card-footer text-center text-muted">
+		        <a href="{% url 'deposit-cash' account.pk %}">Deposit</a> |
+		        <a href="{% url 'withdraw-cash' account.pk %}">Withdraw</a>
+      		</div>
+    		</div>
+    		<br />
 		{% empty %}
-			<li>No accounts to display.</li>
+			<li>No Accounts to display.</li>
 		{% endfor %}
 
 		</ul>
