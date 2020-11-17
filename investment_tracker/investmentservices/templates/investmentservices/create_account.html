@@ -1,3 +1,8 @@
+{% if user.is_authenticated %}
+  Hi {{ user.username }}!
+<p><a href="{% url 'logout' %}">Log Out</a></p>
+{% endif %}
+
 <form method="post">{% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="Create Account">

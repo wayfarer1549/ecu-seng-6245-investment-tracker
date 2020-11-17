@@ -1,3 +1,9 @@
+{% if user.is_authenticated %}
+  Hi {{ user.username }}!
+<p><a href="{% url 'logout' %}">Log Out</a></p>
+{% endif %}
+
 <h1>Account Details</h1>
 
 <h2>{{ object.account_number}}</h2>
+<h2>{{ object.cash_balance}}</h2>
