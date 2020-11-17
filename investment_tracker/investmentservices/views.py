@@ -92,6 +92,13 @@ class PurchaseInvestmentView(LoginRequiredMixin, CreateView):
 	def form_valid(self, form):
 		acct = Account.objects.get(account_owner__exact=self.request.user)
 		form.instance.account = acct
+		# share_price = form.instance.purchase_price
+		# share_count = form.instance.number_of_shares
+		# get the purchase amt
+		# get the number of shares
+		# create the transaction
+		# inv = SharedInvestment.objects.get(id=self.kwargs['pk'])
+		# inv.update_share_count(share_count, share_price)
 		return super().form_valid(form)
 		
 
@@ -109,6 +116,14 @@ class PurchaseAdditionalShares(LoginRequiredMixin, UpdateView):
 	# 	#print(obj.number_of_shares)
 	# 	return obj
 	def form_valid(self, form):
+		acct = Account.objects.get(account_owner__exact=self.request.user)
+		share_price = form.instance.purchase_price
+		share_count = form.instance.number_of_shares
+		# get the purchase amt
+		# get the number of shares
+		# create the transaction
+		inv = SharedInvestment.objects.get(id=self.kwargs['pk'])
+		inv.update_share_count(share_count, share_price)
 		return super().form_valid(form)
 
 class SellInvestmentView(LoginRequiredMixin, UpdateView):
@@ -118,24 +133,41 @@ class SellInvestmentView(LoginRequiredMixin, UpdateView):
 	template_name = 'investmentservices/sell_investment.html'
 	success_url = reverse_lazy('shared-investments-list', )
 	#TODO: Update Cash Balance & Exception Handling depending on Cash Balance
+	
 	def form_valid(self, form):
+		acct = Account.objects.get(account_owner__exact=self.request.user)
+		inv = SharedInvestment.objects.get(id=self.kwargs['pk'])
+		share_price = form.instance.purchase_price
+		share_count = form.instance.number_of_shares
+		# get the purchase amt
+		# get the number of shares
+		# create the transaction
+		shares_sold = inv.number_of_shares - share_count
+		inv.update_share_count(-share_count, share_price)
 		return super().form_valid(form)
 
 class MakeDepositView(LoginRequiredMixin, UpdateView):
 	'''A view for depositing cash to an account'''
 	model = Account
-	fields = ['cash_balance']
+	fields = ['cash_balance', ]
 	template_name = 'investmentservices/make_deposit.html'
 
 	def get_success_url(self):
 		return reverse_lazy('account-detail', kwargs={'pk': self.kwargs['pk']})
+
 	def form_valid(self, form):
+		acct = Account.objects.get(account_owner__exact=self.request.user)
+		new_cash_balance = form.instance.cash_balance
+		orig_cash_balance = acct.get_cash_balance
+
+		trans_amt = new_cash_balance - orig_cash_balance
+		acct.deposit(trans_amt)
 		return super().form_valid(form)
 
-class WithdrawCashView(LoginRequiredMixin, UpdateView):
+class WithdrawCashView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 	'''A view for withdrawing cash from an account'''
 	model = Account
-	fields = ['cash_balance']
+	fields = ['cash_balance',]
 	template_name = 'investmentservices/withdraw_cash.html'
 	success_url = reverse_lazy('account-detail', )
 
@@ -143,7 +175,21 @@ class WithdrawCashView(LoginRequiredMixin, UpdateView):
 		return reverse_lazy('account-detail', kwargs={'pk': self.kwargs['pk']})
 
 	def form_valid(self, form):
+		acct = Account.objects.get(account_owner__exact=self.request.user)
+		
+		new_cash_balance = form.instance.cash_balance
+		orig_cash_balance = acct.get_cash_balance
+
+		trans_amt = orig_cash_balance - new_cash_balance
+		acct.withdraw(trans_amt)
+
+		print(orig_cash_balance, new_cash_balance, trans_amt)
+
+
 		return super().form_valid(form)
+
+	def test_func(self):
+		return self.request.user.is_investor
 
 class StocksListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
 	'''A view for listing all stocks in the current user's portfolio'''
