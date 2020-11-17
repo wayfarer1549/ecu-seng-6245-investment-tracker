@@ -30,18 +30,26 @@ class AccountUpdate(LoginRequiredMixin, UpdateView):
 	template_name = 'investmentservices/account_update.html'
 	success_url = reverse_lazy('shared-investments-list', )
 
-class ListAccounts(LoginRequiredMixin, UserPassesTestMixin, ListView):
+class ListAccounts(LoginRequiredMixin, ListView):
 	'''Lists all accounts'''
 	
 	model = Account
 	template_name = 'investmentservices/list_accounts.html'
+	#self.request.user
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 		return context
 
-	def test_func(self):
-		return self.request.user.is_advisor
+	def get_queryset(self):
+		if self.request.user.is_advisor:
+			return Account.objects.all()
+		else:
+			return Account.objects.filter(account_owner=self.request.user)
+		
+
+	# def test_func(self):
+	# 	return self.request.user.is_advisor
 
 
 class SharedInvestmentsListView(LoginRequiredMixin, ListView):

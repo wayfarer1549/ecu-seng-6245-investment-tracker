@@ -73,10 +73,12 @@
         		<p>Cash balance: {{ account.get_cash_balance }}<p>
         		<p>Investment balance: {{ account.get_investment_balance }}<p>
       		</div>
+      		{% if user.is_advisor %}
       		<div class="card-footer text-center text-muted">
 		        <a href="{% url 'deposit-cash' account.pk %}">Deposit</a> |
 		        <a href="{% url 'withdraw-cash' account.pk %}">Withdraw</a>
       		</div>
+      		{% endif %}
     		</div>
     		<br />
 		{% empty %}
