@@ -44,7 +44,24 @@
 <ul>
 
 {% for shared_investment in object_list %}
-	<li>{{shared_investment.ticker_symbol}}</li>
+
+	<div class="card">
+      		<div class="card-header">
+        	<span class="font-weight-bold">Name: {{ shared_investment.name }}</span>
+        	</span>
+      		</div>
+      		<div class="card-body">
+        		<p>Ticker symbol: {{ shared_investment.ticker_symbol }}<p>
+        		<p>Current share price: {{ shared_investment.current_price }}<p>
+        		<p>Share count: {{ shared_investment.number_of_shares }}<p>
+        		<p>Investment value: {{ shared_investment.investment_value }}<p>
+      		</div>
+      		<div class="card-footer text-center text-muted">
+		        <a href="{% url 'additional-shares' shared_investment.pk %}">Purchase More Shares</a> |
+		        <a href="{% url 'sell-investment' shared_investment.pk %}">Sell</a>
+      		</div>
+    		</div>
+    		<br />
 {% empty %}
 	<li>No investments to display.</li>
 {% endfor %}
