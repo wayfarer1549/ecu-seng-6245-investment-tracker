@@ -32,7 +32,7 @@ class AccountUpdate(LoginRequiredMixin, UpdateView):
 
 class ListAccounts(LoginRequiredMixin, UserPassesTestMixin, ListView):
 	'''Lists all accounts'''
-	#TODO: Filter by advisorID?
+	
 	model = Account
 	template_name = 'investmentservices/list_accounts.html'
 
@@ -82,7 +82,7 @@ class TransactionsListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
 
 class PurchaseInvestmentView(LoginRequiredMixin, CreateView):
 	'''A view for purchasing an investment'''
-	fields = ['ticker_symbol', 'name', 'number_of_shares', 'purchase_price', 'investment_type', 'current_price', 'purchase_date']
+	fields = ['ticker_symbol', 'name', 'number_of_shares', 'purchase_price', 'investment_type', 'current_price', ]
 	template_name = 'investmentservices/purchase_investment.html'
 	success_url = reverse_lazy('shared-investments-list', )
 	model = SharedInvestment
@@ -123,7 +123,9 @@ class PurchaseAdditionalShares(LoginRequiredMixin, UpdateView):
 		# get the number of shares
 		# create the transaction
 		inv = SharedInvestment.objects.get(id=self.kwargs['pk'])
-		inv.update_share_count(share_count, share_price)
+		current_shares = inv.number_of_shares
+		share_difference = share_count - current_shares
+		inv.update_share_count(share_difference, share_price)
 		return super().form_valid(form)
 
 class SellInvestmentView(LoginRequiredMixin, UpdateView):
@@ -143,7 +145,7 @@ class SellInvestmentView(LoginRequiredMixin, UpdateView):
 		# get the number of shares
 		# create the transaction
 		shares_sold = inv.number_of_shares - share_count
-		inv.update_share_count(-share_count, share_price)
+		inv.update_share_count(-shares_sold, share_price)
 		return super().form_valid(form)
 
 class MakeDepositView(LoginRequiredMixin, UpdateView):
