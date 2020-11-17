@@ -39,6 +39,10 @@
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="{% url 'shared-investments-list' %}">All</a>
         </div>
+        </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+      </li>
       </li>
       {% elif user.is_authenticated and user.is_advisor %}
       <li class="nav-item dropdown">
