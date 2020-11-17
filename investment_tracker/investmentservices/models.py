@@ -1,6 +1,8 @@
 from decimal import Decimal
 from django.db import models
-from users.models import FinancialUser
+from django.conf import settings
+#from django.contrib.auth import get_user_model
+#from users.models import FinancialUser
 
 # Create your models here.
 class Account(models.Model):
@@ -8,9 +10,9 @@ class Account(models.Model):
 
 	# Attributes
 	account_number = models.CharField(max_length=20, blank=False, null=False)
-	account_owner = models.OneToOneField(FinancialUser, null=True, on_delete=models.CASCADE, related_name='account_owner_set')
+	account_owner = models.OneToOneField(settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE, related_name='account_owner_set')
 	#advisor = models.CharField(max_length=200)
-	advisor = models.ForeignKey(FinancialUser, null=True, on_delete=models.CASCADE, related_name='account_advisor_set')
+	advisor = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE, related_name='account_advisor_set')
 	investment_balance = models.DecimalField(max_digits=22, decimal_places=2)
 	cash_balance = models.DecimalField(max_digits=22, decimal_places=2)
 	active = models.BooleanField(default=True)
@@ -45,7 +47,7 @@ class Account(models.Model):
 
 			new_transaction = CashTransaction.objects.create(
 				transaction_type='DEP',
-				transaction_date='2020-11-01', #TODO: Current Date
+				#transaction_date='2020-11-01', #TODO: Current Date
 				transaction_amount=Decimal(amount) )
 		
 
@@ -56,7 +58,7 @@ class Account(models.Model):
 
 			new_transaction = CashTransaction.objects.create(
 				transaction_type='WDL',
-				transaction_date='2020-11-01', #TODO: Current Date
+				#transaction_date='2020-11-01', #TODO: Current Date
 				transaction_amount=Decimal(amount) )
 
 class Investment(models.Model):
@@ -64,12 +66,13 @@ class Investment(models.Model):
 
 	# Attributes
 	#account = models.CharField(max_length=20, blank=True, null=True)
-	account = models.OneToOneField(Account, on_delete=models.CASCADE, blank=True, null=True)
-	purchase_date = models.DateField('date purchased')
+	account = models.ForeignKey(Account, on_delete=models.CASCADE, blank=True, null=True)
+	purchase_date = models.DateField('date purchased', auto_now_add=True)
 	name = models.CharField(max_length=200, blank=False, null=False)
 
 	class Meta:
 		abstract = True
+
 
 class Bond(Investment):
 	'''Overview: Represents a government or corporate bond investment in a customer's portfolio'''
@@ -114,6 +117,7 @@ class Bond(Investment):
 		# Calculate time delta and * by number of payments per year
 		pass
 
+
 	def __str__(self):
 		return self.bond_type + ' ' + str(self.get_yield) + ' ' + str(self.purchase_date)
 	
@@ -138,6 +142,8 @@ class SharedInvestment(Investment):
 		max_length=3,
 		choices=SHARED_INVESTMENT_CHOICES,
 		)
+
+	#def save(self):
 
 	def update_share_count(self, share_count, purchase_price):
 		'''updates this model with a new share count'''
@@ -172,6 +178,9 @@ class SharedInvestment(Investment):
 	def __str__(self):
 		return self.ticker_symbol
 
+	def get_absolute_url(self):
+		return reverse('shared-investment-detail', args=[str(self.id)])
+
 
 
 class InvestmentList(models.Model):
@@ -195,7 +204,7 @@ class Transaction(models.Model):
 	]
 
 	account = models.CharField(max_length=20, blank=True, null=True)#models.ForeignKey(Account, on_delete=models.CASCADE, blank=False) #models.CharField(max_length=20)
-	transaction_date = models.DateField(blank=False)
+	transaction_date = models.DateField(blank=False, auto_now_add=True)
 	transaction_amount = models.DecimalField(max_digits=22, decimal_places=2)
 	transaction_type = models.CharField(max_length=4, choices=TRANSACTION_TYPES)
 

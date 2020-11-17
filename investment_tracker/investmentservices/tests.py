@@ -3,6 +3,8 @@ from django.test import TestCase
 from .models import Account, SharedInvestment, Bond, SharedTransaction, CashTransaction
 
 # Create your tests here.
+# Run with: jpp$ python manage.py  test -v 3 investmentservices
+
 class AccountModelTest(TestCase):
 
 	def setUp(self):
@@ -170,29 +172,29 @@ class SharedInvestmentTest(TestCase):
 
 
 
-class BondTest(TestCase):
+# class BondTest(TestCase):
 	
-	def setUp(self):
-		pass
+# 	def setUp(self):
+# 		pass
 
-	def test_create_treasury_bill(self):
-		pass
+# 	def test_create_treasury_bill(self):
+# 		pass
 
-	def test_create_treasury_note(self):
-		pass
+# 	def test_create_treasury_note(self):
+# 		pass
 
-	def test_create_treasury_bond(self):
-		pass
+# 	def test_create_treasury_bond(self):
+# 		pass
 
-	def test_create_corporate_bond(self):
-		pass
+# 	def test_create_corporate_bond(self):
+# 		pass
 
-	def test_create_municipal_bond(self):
-		pass
+# 	def test_create_municipal_bond(self):
+# 		pass
 
-	def test_create_international_bond(self):
-		pass
+# 	def test_create_international_bond(self):
+# 		pass
 
-class TransactionTests(TestCase):
-	pass
+# class TransactionTests(TestCase):
+# 	pass
 
