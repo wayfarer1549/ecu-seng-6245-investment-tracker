@@ -189,10 +189,12 @@ class Transaction(models.Model):
 	TRANSACTION_TYPES = [
 		('BUY', 'Purchased'),
 		('SELL', 'Sold'),
+		('DEP', 'Deposit'),
+		('WDL', 'Withdrawal'),
 		
 	]
 
-	#account = models.ForeignKey(Account, on_delete=models.CASCADE, blank=False) #models.CharField(max_length=20)
+	account = models.CharField(max_length=20, blank=True, null=True)#models.ForeignKey(Account, on_delete=models.CASCADE, blank=False) #models.CharField(max_length=20)
 	transaction_date = models.DateField(blank=False)
 	transaction_amount = models.DecimalField(max_digits=22, decimal_places=2)
 	transaction_type = models.CharField(max_length=4, choices=TRANSACTION_TYPES)
@@ -201,7 +203,7 @@ class Transaction(models.Model):
 		abstract = True
 
 	def __str__(self):
-		return self.transaction_date + account.get_acct_number()
+		return str(self.transaction_date) + self.transaction_type #+ account.get_acct_number()
 
 class BondTransaction(Transaction):
 	'''Represents a transaction involving a bond investment'''
