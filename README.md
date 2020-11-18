@@ -18,9 +18,12 @@ Both were created for SENG 6245 course at East Carolina University.
 
 ## Running tests:
 
-`python run -m unittest -v Test*.py`
+Run Python tests from within the subdirectories of hw4: `python run -m unittest -v Test*.py`
 
-`coverage run -m unittest -v Test*.py`
+Run Coverage for unit tests: coverage run -m unittest -v Test*.py`
+
+View Coverage report: `coverage report -m`inside one of the modle directories.
 
 ## Running Django tests:
-`python manage.py  test -v 3 investmentservices`
+Use this command to run unit tests for the Django project: `python manage.py  test -v 3 investmentservices`
+Note: It should be run within the same directory as `manage.py`.
